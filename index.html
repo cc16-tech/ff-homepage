@@ -3,477 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CC — The Starting Zone</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>CC — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:       #090e1a;
-  --surface:  #111a2e;
-  --surface2: #162035;
-  --surface3: #1c2840;
-  --border:   rgba(255,255,255,0.07);
-  --borderhi: rgba(255,255,255,0.14);
-  --gold:     #f0c060;
-  --amber:    #ff9e2c;
-  --cyan:     #38d9f5;
-  --green:    #3dffa0;
-  --red:      #ff5566;
-  --text:     #e8eaf0;
-  --muted:    #6b7a99;
-  --muted2:   #4a5570;
+  --bg:      #0a0a0a;
+  --bg2:     #111111;
+  --bg3:     #171717;
+  --border:  rgba(255,255,255,0.08);
+  --bhi:     rgba(255,255,255,0.15);
+  --text:    #f0ede8;
+  --muted:   #666660;
+  --muted2:  #3a3a36;
+  --gold:    #c8a96e;
+  --gold2:   #e8c98e;
+  --green:   #4ade80;
+  --amber:   #f59e0b;
+  --red:     #ef4444;
+  --cyan:    #67e8f9;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',sans-serif;font-weight:300;
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.35;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+.page{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh;}
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
+/* ── NAV ── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 36px;border-bottom:1px solid var(--border);
+}
+.nav-brand{font-family:'DM Mono',monospace;font-size:11px;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:20px;}
+#nav-clock{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--text);letter-spacing:0.04em;}
+.c-col{color:var(--gold);animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0.1}}
+#nav-period{font-size:10px;color:var(--muted);margin-left:2px;}
+#nav-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+
+/* ── HERO ── */
+.hero{
+  display:flex;flex-direction:column;align-items:center;
+  padding:36px 36px 32px;text-align:center;
+  border-bottom:1px solid var(--border);
+}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.26em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.hero-name{font-family:'DM Serif Display',serif;font-size:60px;font-weight:400;color:var(--text);line-height:1;margin-bottom:28px;letter-spacing:-0.02em;}
+
+/* ── SEARCH ── */
+.search-wrap{width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.search-bar{
+  width:100%;display:flex;align-items:center;
+  background:var(--bg2);border:1px solid var(--bhi);border-radius:3px;
+  padding:0 4px 0 18px;transition:border-color .2s,box-shadow .2s;
+}
+.search-bar:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,169,110,.08);}
+.duck{font-size:13px;margin-right:10px;opacity:0.4;flex-shrink:0;}
+#search-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--text);font-family:'Inter',sans-serif;font-size:14px;font-weight:300;
+  padding:12px 0;caret-color:var(--gold);
+}
+#search-input::placeholder{color:var(--muted2);}
+.search-btn{
+  background:var(--gold);color:#0a0a0a;border:none;border-radius:2px;
+  padding:7px 18px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;
+  letter-spacing:0.08em;cursor:pointer;transition:opacity .15s;flex-shrink:0;text-transform:uppercase;
+}
+.search-btn:hover{opacity:.8;}
+
+/* ── DYNAMIC CHIPS ── */
+.chips{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.chip{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);padding:4px 11px;border:1px solid var(--border);border-radius:2px;
+  cursor:pointer;transition:all .15s;background:transparent;display:flex;align-items:center;gap:5px;
+}
+.chip:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.04);}
+.chip-ct{
+  font-size:8px;background:rgba(200,169,110,.15);color:var(--gold);
+  padding:1px 4px;border-radius:2px;font-family:'DM Mono',monospace;
 }
 
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(240,192,96,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 85% 80%, rgba(56,217,245,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(61,255,160,0.03) 0%, transparent 60%);
-  pointer-events:none; z-index:0;
+/* ── QUOTE ── */
+.quote-wrap{margin-top:20px;text-align:center;}
+.quote-line{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;color:var(--muted);line-height:1.5;transition:opacity .5s;}
+.quote-line em{font-style:normal;color:var(--gold2);}
+.quote-by{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);margin-top:5px;letter-spacing:0.12em;text-transform:uppercase;}
+
+/* ── GRID: 4 equal columns, equal height rows ── */
+.grid{
+  flex:1;display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+  grid-template-rows:auto;
+  border-top:1px solid var(--border);
+  align-items:start; /* each col heights itself */
 }
-
-body::after {
-  content:'';
-  position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-  background-size: 44px 44px;
-  pointer-events:none; z-index:0;
-}
-
-/* ─── LAYOUT ─── */
-.page { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh; }
-
-/* ─── TOP NAV ─── */
-.topnav {
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 14px 28px;
-  border-bottom: 1px solid var(--border);
-}
-
-.nav-brand {
-  font-family:'Syne',sans-serif; font-weight:800; font-size:12px;
-  letter-spacing:0.28em; text-transform:uppercase; color:var(--gold); opacity:0.75;
-}
-
-.nav-center {
-  font-family:'Space Mono',monospace; font-size:10px; color:var(--muted);
-  letter-spacing:0.08em;
-}
-
-.nav-right {
-  display:flex; align-items:center; gap:14px;
-}
-
-#nav-clock {
-  font-family:'Space Mono',monospace; font-size:13px; font-weight:700;
-  color:var(--text); letter-spacing:0.05em;
-}
-
-#nav-clock .c-col { color:var(--gold); animation:blink 1s step-end infinite; }
-@keyframes blink { 50%{opacity:0.15} }
-
-#nav-period { font-size:10px; color:var(--muted); margin-left:3px; }
-
-#nav-date {
-  font-family:'Space Mono',monospace; font-size:10px; color:var(--muted);
-  letter-spacing:0.04em;
-}
-
-/* ─── HERO SECTION ─── */
-.hero {
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding: 48px 20px 36px;
-  text-align:center;
-}
-
-.hero-greeting {
-  font-family:'Syne',sans-serif; font-size:13px; font-weight:600;
-  letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;
-}
-
-.hero-name {
-  font-family:'Syne',sans-serif; font-size:52px; font-weight:800;
-  color:var(--gold); line-height:1; margin-bottom:6px;
-  text-shadow: 0 0 60px rgba(240,192,96,0.25);
-}
-
-.hero-tagline {
-  font-size:13px; color:var(--muted); font-weight:300;
-  font-style:italic; margin-bottom:32px; min-height:20px;
-}
-
-/* ─── SEARCH BAR ─── */
-.search-wrap {
-  width:100%; max-width:620px;
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-}
-
-.search-bar {
-  width:100%;
-  display:flex; align-items:center;
-  background:var(--surface);
-  border:1px solid var(--borderhi);
-  border-radius:50px;
-  padding: 4px 4px 4px 22px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-}
-
-.search-bar:focus-within {
-  border-color:var(--gold);
-  box-shadow: 0 0 0 3px rgba(240,192,96,0.1), 0 4px 24px rgba(0,0,0,0.3);
-}
-
-.search-duck { font-size:15px; margin-right:10px; opacity:0.6; flex-shrink:0; }
-
-#search-input {
-  flex:1; background:transparent; border:none; outline:none;
-  color:var(--text); font-family:'Inter',sans-serif; font-size:15px;
-  padding:11px 0; caret-color:var(--gold);
-}
-
-#search-input::placeholder { color:var(--muted2); }
-
-.search-btn {
-  background:var(--gold); color:#090e1a;
-  border:none; border-radius:40px;
-  padding:9px 22px;
-  font-family:'Space Mono',monospace; font-size:11px; font-weight:700;
-  letter-spacing:0.06em; cursor:pointer; transition:opacity 0.15s; flex-shrink:0;
-}
-.search-btn:hover { opacity:0.82; }
-
-.search-shortcuts {
-  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
-}
-
-.shortcut-chip {
-  font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.08em;
-  color:var(--muted2); padding:4px 10px;
-  border:1px solid var(--border); border-radius:20px;
-  cursor:pointer; transition:all 0.15s; text-decoration:none;
-}
-.shortcut-chip:hover { border-color:var(--gold); color:var(--gold); }
-
-/* ─── QUOTE TICKER ─── */
-.quote-ticker {
-  width:100%; max-width:520px;
-  text-align:center; margin-top:20px;
-}
-
-.quote-text {
-  font-family:'Syne',sans-serif; font-size:15px; font-weight:600;
-  color:var(--text); line-height:1.4; transition:opacity 0.5s;
-}
-
-.quote-text em { font-style:normal; color:var(--gold); }
-.quote-attr { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2); margin-top:6px; letter-spacing:0.1em; }
-
-/* ─── MAIN GRID ─── */
-.main-grid {
-  flex:1; display:grid;
-  grid-template-columns: 260px 1fr 260px;
-  gap:16px; padding:0 24px 24px;
-  align-items:start;
-}
-
-/* ─── CARD ─── */
-.card {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:14px; padding:18px; transition:border-color 0.2s;
-  position:relative; overflow:hidden;
-}
-.card:hover { border-color:var(--borderhi); }
-
-.card-header {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:14px;
-}
-
-.card-label {
-  font-family:'Space Mono',monospace; font-size:9px;
-  letter-spacing:0.2em; text-transform:uppercase; color:var(--muted2);
-}
-
-.card-action {
-  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
-  cursor:pointer; transition:color 0.15s; border:none; background:transparent; letter-spacing:0.05em;
-}
-.card-action:hover { color:var(--gold); }
-
-/* ─── WEATHER ─── */
-.weather-main {
-  display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;
-}
-
-.weather-icon { font-size:36px; line-height:1; }
-
-.weather-temp {
-  font-family:'Syne',sans-serif; font-size:38px; font-weight:800; color:var(--text); line-height:1;
-}
-
-.weather-unit { font-size:18px; color:var(--muted); }
-
-.weather-desc {
-  font-size:12px; color:var(--muted); margin-bottom:10px; text-transform:capitalize;
-}
-
-.weather-meta {
-  display:flex; gap:8px; flex-wrap:wrap;
-}
-
-.weather-pill {
-  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
-  padding:3px 8px; border:1px solid var(--border); border-radius:12px;
-}
-
-.weather-location {
-  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
-  margin-top:8px; letter-spacing:0.05em;
-}
-
-#weather-loading { font-size:12px; color:var(--muted2); text-align:center; padding:10px 0; font-style:italic; }
-
-/* ─── FOCUS INPUT ─── */
-.focus-wrap { display:flex; align-items:center; gap:10px; }
-.focus-dot { width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;box-shadow:0 0 8px var(--amber); }
-
-#focus-input {
-  background:transparent; border:none; outline:none;
-  color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
-  width:100%; caret-color:var(--gold);
-}
-#focus-input::placeholder { color:var(--muted2); font-style:italic; }
-
-/* ─── BUILD STREAK ─── */
-.streak-row { display:flex; gap:4px; }
-
-.streak-day {
-  flex:1; height:38px; border-radius:6px;
-  background:rgba(255,255,255,0.04); border:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; gap:3px;
-  cursor:pointer; transition:all 0.15s; user-select:none;
-}
-
-.streak-day:hover { border-color:var(--gold); }
-.streak-day.active { background:rgba(240,192,96,0.12); border-color:rgba(240,192,96,0.4); }
-
-.s-label { font-family:'Space Mono',monospace; font-size:8px; color:var(--muted2); }
-.streak-day.active .s-label { color:var(--gold); }
-
-.streak-dot { width:5px;height:5px;border-radius:50%;background:var(--muted2);transition:all 0.15s; }
-.streak-day.active .streak-dot { background:var(--gold);box-shadow:0 0 6px var(--gold); }
-
-.streak-count { font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;text-align:right; }
-
-/* ─── NOTES ─── */
-#notes-input {
-  width:100%; min-height:120px; background:transparent; border:none; outline:none;
-  color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
-  line-height:1.6; resize:none; caret-color:var(--gold);
-}
-#notes-input::placeholder { color:var(--muted2); font-style:italic; }
-
-.notes-footer {
-  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
-  margin-top:8px; text-align:right; letter-spacing:0.05em;
-}
-
-/* ─── TODO ─── */
-.todo-input-row {
-  display:flex; gap:8px; margin-bottom:12px;
-}
-
-#todo-input {
-  flex:1; background:var(--surface2); border:1px solid var(--border);
-  border-radius:8px; padding:8px 12px; color:var(--text);
-  font-family:'Inter',sans-serif; font-size:12px; outline:none;
-  caret-color:var(--gold); transition:border-color 0.15s;
-}
-#todo-input:focus { border-color:var(--gold); }
-#todo-input::placeholder { color:var(--muted2); }
-
-.todo-add-btn {
-  background:var(--gold); color:#090e1a; border:none; border-radius:8px;
-  padding:8px 14px; font-family:'Space Mono',monospace; font-size:10px;
-  font-weight:700; cursor:pointer; transition:opacity 0.15s; flex-shrink:0;
-}
-.todo-add-btn:hover { opacity:0.82; }
-
-.todo-list { display:flex; flex-direction:column; gap:5px; max-height:200px; overflow-y:auto; }
-
-.todo-item {
-  display:flex; align-items:center; gap:8px;
-  padding:8px 10px; background:rgba(255,255,255,0.025);
-  border:1px solid var(--border); border-radius:8px; transition:all 0.15s;
-}
-.todo-item:hover { border-color:var(--borderhi); }
-.todo-item.done { opacity:0.4; }
-.todo-item.done .todo-text { text-decoration:line-through; }
-
-.todo-check {
-  width:16px; height:16px; border-radius:4px; border:1px solid var(--muted2);
-  cursor:pointer; flex-shrink:0; transition:all 0.15s;
-  display:flex; align-items:center; justify-content:center; font-size:9px;
-}
-.todo-item.done .todo-check { background:var(--green); border-color:var(--green); color:#090e1a; }
-
-.todo-text { font-size:12px; color:var(--text); flex:1; }
-
-.todo-del { font-size:10px; color:var(--muted2); cursor:pointer; opacity:0; transition:all 0.15s; }
-.todo-item:hover .todo-del { opacity:1; }
-.todo-del:hover { color:var(--red); }
-
-.todo-empty { font-size:11px; color:var(--muted2); text-align:center; padding:12px 0; font-style:italic; }
-
-.todo-footer { display:flex; justify-content:space-between; margin-top:10px; }
-
-/* ─── PROJECTS ─── */
-.pipeline { display:flex; flex-direction:column; gap:5px; }
-
-.pipeline-item {
-  display:flex; align-items:center; gap:10px;
-  padding:9px 12px; background:rgba(255,255,255,0.025);
-  border:1px solid var(--border); border-radius:8px; transition:all 0.15s;
-}
-.pipeline-item:hover { background:rgba(255,255,255,0.05); border-color:var(--borderhi); transform:translateX(2px); }
-
-.p-dot { width:6px;height:6px;border-radius:50%;flex-shrink:0; }
-.p-name { font-size:12px; color:var(--text); flex:1; }
-.p-tag {
-  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
-  cursor:pointer; padding:2px 6px; border:1px solid transparent; border-radius:4px; transition:all 0.15s;
-}
-.p-tag:hover { border-color:var(--borderhi); color:var(--gold); }
-
-.p-del { font-size:10px;color:var(--muted2);cursor:pointer;opacity:0;transition:all 0.15s; }
-.pipeline-item:hover .p-del { opacity:1; }
-.p-del:hover { color:var(--red); }
-
-.add-btn {
-  display:flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:8px; border:1px dashed var(--border);
-  color:var(--muted2); font-size:11px; cursor:pointer; transition:all 0.15s;
-  background:transparent; width:100%; text-align:left; margin-top:8px;
-  font-family:'Space Mono',monospace; letter-spacing:0.05em;
-}
-.add-btn:hover { border-color:var(--gold); color:var(--gold); }
-
-/* ─── LINKS ─── */
-.link-item {
-  display:flex; align-items:center; gap:10px;
-  padding:8px 10px; border-radius:8px; text-decoration:none;
-  color:var(--text); font-size:13px; transition:all 0.15s; margin-bottom:2px;
-}
-.link-item:hover { background:rgba(255,255,255,0.05); color:var(--gold); }
-
-.link-icon {
-  width:26px;height:26px;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
-}
-.link-sub { font-size:10px;color:var(--muted2);margin-top:1px; }
-
-/* ─── STATUS PILLS ─── */
-.status-row { display:flex;gap:6px;flex-wrap:wrap;margin-top:4px; }
-.status-pill {
-  display:flex;align-items:center;gap:5px;
-  font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);
-  padding:4px 8px;border:1px solid var(--border);border-radius:20px;
-}
-.s-dot { width:5px;height:5px;border-radius:50%; }
-.dot-g { background:var(--green);box-shadow:0 0 6px var(--green); }
-.dot-a { background:var(--amber);box-shadow:0 0 6px var(--amber); }
-
-/* ─── BOTTOM BAR ─── */
-.bottombar {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 28px; border-top:1px solid var(--border);
-}
-.bottom-left { display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted2); }
-.bottom-pulse { width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite; }
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.bottom-right { font-family:'Space Mono',monospace;font-size:10px;color:var(--muted2); }
-
-/* ─── MODAL ─── */
-.modal-overlay {
-  position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(8px);
-}
-.modal-overlay.open { opacity:1;pointer-events:all; }
-
-.modal {
-  background:#111a2e;border:1px solid var(--borderhi);border-radius:16px;
-  padding:28px;width:360px;transform:translateY(14px);transition:transform 0.2s;
-  box-shadow:0 24px 64px rgba(0,0,0,0.6);
-}
-.modal-overlay.open .modal { transform:translateY(0); }
-
-.modal-title { font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--gold);margin-bottom:20px; }
-
-.modal label {
-  display:block;font-family:'Space Mono',monospace;font-size:9px;
-  letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;
-}
-
-.modal input, .modal select {
-  width:100%;background:var(--surface2);border:1px solid var(--borderhi);
-  border-radius:8px;padding:10px 14px;color:var(--text);
-  font-family:'Inter',sans-serif;font-size:13px;outline:none;margin-bottom:14px;
-  caret-color:var(--gold);transition:border-color 0.15s;
-}
-.modal input:focus,.modal select:focus { border-color:var(--gold); }
-.modal select option { background:#111a2e; }
-
-.modal-actions { display:flex;gap:10px; }
-
-.modal-save {
-  flex:1;background:var(--gold);color:#090e1a;border:none;border-radius:8px;
-  padding:11px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
-  cursor:pointer;transition:opacity 0.15s;letter-spacing:0.05em;
-}
-.modal-save:hover { opacity:0.82; }
-
-.modal-cancel {
-  background:transparent;color:var(--muted);border:1px solid var(--border);
-  border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;
-  font-size:11px;cursor:pointer;transition:all 0.15s;
-}
-.modal-cancel:hover { border-color:var(--borderhi);color:var(--text); }
-
-/* ─── FADE IN ─── */
-.fade { opacity:0;transform:translateY(8px);animation:fadeUp 0.45s ease forwards; }
-@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-.d1{animation-delay:0.04s}.d2{animation-delay:0.1s}.d3{animation-delay:0.16s}
-.d4{animation-delay:0.22s}.d5{animation-delay:0.28s}.d6{animation-delay:0.34s}
-
-::-webkit-scrollbar{width:4px}
+.col{display:flex;flex-direction:column;border-right:1px solid var(--border);}
+.col:last-child{border-right:none;}
+
+/* ── SECTION ── */
+.section{border-bottom:1px solid var(--border);padding:20px 22px;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.sec-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
+.sec-btn{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted2);border:none;background:transparent;cursor:pointer;padding:0;line-height:1;transition:color .15s;width:16px;text-align:center;}
+.sec-btn:hover{color:var(--gold);}
+.sec-body{overflow:hidden;transition:max-height .3s ease,opacity .3s ease,margin-top .3s ease;}
+.sec-body.open{margin-top:14px;}
+.sec-body.closed{max-height:0!important;opacity:0;margin-top:0;}
+
+/* ── LINKS ── */
+.lnk{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);transition:all .15s;}
+.lnk:last-child{border-bottom:none;padding-bottom:0;}
+.lnk:first-child{padding-top:0;}
+.lnk:hover{color:var(--gold);}
+.lnk:hover .larr{opacity:1;transform:translateX(0);}
+.lnk-ico{width:22px;height:22px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);}
+.lnk-info{flex:1;}
+.lnk-name{font-size:12px;font-weight:400;line-height:1.2;}
+.lnk-sub{font-size:10px;color:var(--muted);margin-top:1px;font-family:'DM Mono',monospace;}
+.larr{font-size:10px;color:var(--muted2);opacity:0;transform:translateX(-4px);transition:all .15s;}
+
+/* ── WEATHER ── */
+.wx-main{display:flex;align-items:flex-end;gap:10px;margin-bottom:8px;}
+.wx-ico{font-size:28px;line-height:1;}
+.wx-temp{font-family:'DM Serif Display',serif;font-size:36px;color:var(--text);line-height:1;}
+.wx-unit{font-size:14px;color:var(--muted);}
+.wx-desc{font-size:11px;color:var(--muted);margin-bottom:7px;font-style:italic;}
+.wx-pills{display:flex;gap:5px;flex-wrap:wrap;}
+.wx-pill{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);padding:3px 7px;border:1px solid var(--border);border-radius:2px;}
+.wx-loc{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);margin-top:7px;}
+#wx-msg{font-size:11px;color:var(--muted);font-style:italic;padding:4px 0;}
+.wx-refresh{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);background:transparent;border:none;cursor:pointer;margin-top:6px;transition:color .15s;letter-spacing:0.06em;}
+.wx-refresh:hover{color:var(--gold);}
+
+/* ── FOCUS ── */
+.focus-wrap{display:flex;align-items:center;gap:10px;}
+.fpulse{width:5px;height:5px;border-radius:50%;flex-shrink:0;background:var(--amber);box-shadow:0 0 7px rgba(245,158,11,.5);animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
+#focus-in{background:transparent;border:none;outline:none;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;font-weight:300;width:100%;caret-color:var(--gold);}
+#focus-in::placeholder{color:var(--muted2);font-style:italic;}
+
+/* ── STREAK ── */
+.streak-row{display:flex;gap:3px;}
+.sd{flex:1;height:34px;border:1px solid var(--border);border-radius:2px;background:transparent;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;cursor:pointer;transition:all .15s;user-select:none;}
+.sd:hover{border-color:var(--gold);}
+.sd.on{background:rgba(200,169,110,.1);border-color:rgba(200,169,110,.35);}
+.dl{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted2);}
+.sd.on .dl{color:var(--gold);}
+.sdot{width:4px;height:4px;border-radius:50%;background:var(--muted2);}
+.sd.on .sdot{background:var(--gold);box-shadow:0 0 5px var(--gold);}
+.streak-ct{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);margin-top:7px;text-align:right;}
+
+/* ── TABS (Notes/Todo) ── */
+.tabs{display:flex;gap:0;margin-bottom:14px;border-bottom:1px solid var(--border);}
+.tab{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted2);padding:0 0 8px;margin-right:18px;cursor:pointer;border:none;background:transparent;transition:color .15s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab:hover{color:var(--muted);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── TODO ── */
+.todo-row{display:flex;gap:7px;margin-bottom:10px;}
+#todo-in{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:2px;padding:7px 11px;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;font-weight:300;outline:none;caret-color:var(--gold);transition:border-color .15s;}
+#todo-in:focus{border-color:var(--gold);}
+#todo-in::placeholder{color:var(--muted2);}
+.tbtn{background:var(--gold);color:#0a0a0a;border:none;border-radius:2px;padding:7px 12px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;flex-shrink:0;}
+.tbtn:hover{opacity:.8;}
+.todo-list{display:flex;flex-direction:column;gap:2px;max-height:200px;overflow-y:auto;}
+.ti{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);transition:opacity .15s;}
+.ti:last-child{border-bottom:none;}
+.ti.done{opacity:.35;}
+.ti.done .ti-txt{text-decoration:line-through;}
+.ti-box{width:13px;height:13px;border:1px solid var(--muted2);border-radius:1px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .15s;}
+.ti.done .ti-box{background:var(--green);border-color:var(--green);color:#0a0a0a;}
+.ti-txt{font-size:12px;color:var(--text);flex:1;font-weight:300;}
+.ti-del{font-size:10px;color:var(--muted2);cursor:pointer;opacity:0;transition:all .15s;}
+.ti:hover .ti-del{opacity:1;}
+.ti-del:hover{color:var(--red);}
+.todo-ft{display:flex;justify-content:space-between;margin-top:8px;}
+.todo-ft span{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);}
+.clr-btn{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);background:transparent;border:none;cursor:pointer;transition:color .15s;}
+.clr-btn:hover{color:var(--gold);}
+.t-empty{font-size:11px;color:var(--muted2);padding:6px 0;font-style:italic;}
+
+/* ── NOTES ── */
+#notes-ta{width:100%;min-height:130px;background:transparent;border:none;outline:none;color:var(--text);font-family:'Inter',sans-serif;font-size:12px;font-weight:300;line-height:1.7;resize:none;caret-color:var(--gold);}
+#notes-ta::placeholder{color:var(--muted2);font-style:italic;}
+.notes-ft{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);margin-top:7px;text-align:right;}
+
+/* ── PROJECTS ── */
+.pi{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);transition:padding .15s;}
+.pi:last-child{border-bottom:none;}
+.pi:hover{padding-left:3px;}
+.pi-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.pi-name{font-size:12px;color:var(--text);flex:1;font-weight:300;}
+.pi-tag{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);cursor:pointer;padding:2px 6px;border:1px solid transparent;border-radius:1px;transition:all .15s;letter-spacing:0.06em;text-transform:uppercase;}
+.pi-tag:hover{border-color:var(--border);color:var(--gold);}
+.pi-del{font-size:9px;color:var(--muted2);cursor:pointer;opacity:0;transition:all .15s;}
+.pi:hover .pi-del{opacity:1;}
+.pi-del:hover{color:var(--red);}
+.add-proj{display:flex;align-items:center;gap:7px;margin-top:9px;padding:6px 0;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted2);background:transparent;border:none;border-top:1px dashed var(--muted2);cursor:pointer;width:100%;transition:color .15s;}
+.add-proj:hover{color:var(--gold);}
+
+/* ── ENV ── */
+.env-row{display:flex;gap:5px;flex-wrap:wrap;}
+.epill{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);padding:4px 9px;border:1px solid var(--border);border-radius:2px;letter-spacing:0.06em;}
+.edot{width:4px;height:4px;border-radius:50%;}
+.eg{background:var(--green);box-shadow:0 0 5px var(--green);}
+.ea{background:var(--amber);box-shadow:0 0 5px var(--amber);}
+
+/* ── FOOTER ── */
+footer{display:flex;align-items:center;justify-content:space-between;padding:13px 36px;border-top:1px solid var(--border);}
+.ft-l{display:flex;align-items:center;gap:7px;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);letter-spacing:0.08em;}
+.ft-pulse{width:4px;height:4px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 2s ease-in-out infinite;}
+.ft-r{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(12px);}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#111;border:1px solid var(--bhi);border-radius:3px;padding:30px;width:360px;transform:translateY(12px);transition:transform .2s;box-shadow:0 32px 80px rgba(0,0,0,.8);}
+.overlay.open .modal{transform:translateY(0);}
+.modal-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);margin-bottom:20px;}
+.modal label{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.modal input,.modal select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:2px;padding:9px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;font-weight:300;outline:none;margin-bottom:14px;caret-color:var(--gold);transition:border-color .15s;}
+.modal input:focus,.modal select:focus{border-color:var(--gold);}
+.modal select option{background:#111;}
+.modal-acts{display:flex;gap:8px;}
+.m-save{flex:1;background:var(--gold);color:#0a0a0a;border:none;border-radius:2px;padding:10px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;}
+.m-save:hover{opacity:.8;}
+.m-cancel{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:2px;padding:10px 16px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
+.m-cancel:hover{border-color:var(--bhi);color:var(--text);}
+
+/* ── ANIM ── */
+.fade{opacity:0;transform:translateY(6px);animation:fu .45s ease forwards;}
+@keyframes fu{to{opacity:1;transform:translateY(0)}}
+.d1{animation-delay:.04s}.d2{animation-delay:.1s}.d3{animation-delay:.16s}
+.d4{animation-delay:.22s}.d5{animation-delay:.28s}.d6{animation-delay:.34s}
+
+::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--borderhi);border-radius:2px}
+::-webkit-scrollbar-thumb{background:var(--muted2);border-radius:2px}
 </style>
 </head>
 <body>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
+<div class="overlay" id="overlay">
   <div class="modal">
-    <div class="modal-title">+ New Project</div>
-    <label>Project Name</label>
-    <input id="m-name" type="text" placeholder="e.g. Portfolio Site" maxlength="40"/>
+    <div class="modal-title">New Project</div>
+    <label>Name</label>
+    <input id="m-name" type="text" placeholder="Project name" maxlength="40"/>
     <label>Status</label>
     <select id="m-status">
       <option value="IN PROGRESS">In Progress</option>
@@ -481,612 +269,551 @@ body::after {
       <option value="DONE">Done</option>
       <option value="PAUSED">Paused</option>
     </select>
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-save" onclick="saveProject()">Add Project</button>
+    <div class="modal-acts">
+      <button class="m-cancel" onclick="closeModal()">Cancel</button>
+      <button class="m-save" onclick="saveProj()">Add Project</button>
     </div>
   </div>
 </div>
 
 <div class="page">
 
-  <!-- TOP NAV -->
-  <nav class="topnav fade d1">
-    <div class="nav-brand">The Starting Zone</div>
-    <div class="nav-center" id="nav-quote-mini"></div>
+  <nav class="fade d1">
+    <div class="nav-brand">Command Center</div>
     <div class="nav-right">
       <div id="nav-clock"><span id="nh">--</span><span class="c-col">:</span><span id="nm">--</span><span id="nav-period"></span></div>
       <div id="nav-date"></div>
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero fade d2">
-    <div class="hero-greeting">Welcome back</div>
+    <div class="hero-eyebrow">Mac OS M5 Pro</div>
     <div class="hero-name">CC</div>
-    <div class="hero-tagline" id="tagline"></div>
 
-    <!-- SEARCH -->
     <div class="search-wrap">
       <div class="search-bar">
-        <span class="search-duck">🦆</span>
-        <input id="search-input" type="text" placeholder="Search DuckDuckGo..." autocomplete="off"
-          onkeydown="if(event.key==='Enter') runSearch()" />
+        <span class="duck">🦆</span>
+        <input id="search-input" type="text" placeholder="Search DuckDuckGo..."
+          autocomplete="off" onkeydown="if(event.key==='Enter')runSearch()"/>
         <button class="search-btn" onclick="runSearch()">Search</button>
       </div>
-      <div class="search-shortcuts">
-        <a class="shortcut-chip" onclick="searchFor('YouTube')">YouTube</a>
-        <a class="shortcut-chip" onclick="searchFor('GitHub')">GitHub</a>
-        <a class="shortcut-chip" onclick="searchFor('Stack Overflow')">Stack Overflow</a>
-        <a class="shortcut-chip" onclick="searchFor('Reddit')">Reddit</a>
-        <a class="shortcut-chip" onclick="searchFor('MDN Web Docs')">MDN Docs</a>
-        <a class="shortcut-chip" onclick="searchFor('ChatGPT')">ChatGPT</a>
-      </div>
+      <div class="chips" id="chips-row"></div>
     </div>
 
-    <!-- QUOTE -->
-    <div class="quote-ticker">
-      <div class="quote-text" id="q-text">Ideas don't ship themselves. <em>You do.</em></div>
-      <div class="quote-attr" id="q-attr">— THE STARTING ZONE</div>
+    <div class="quote-wrap">
+      <div class="quote-line" id="q-line"></div>
+      <div class="quote-by" id="q-by"></div>
     </div>
   </section>
 
-  <!-- MAIN GRID -->
-  <div class="main-grid">
+  <div class="grid">
 
-    <!-- LEFT -->
-    <div style="display:flex;flex-direction:column;gap:14px">
+    <!-- COL 1: Weather (collapsed) · Focus · Streak (collapsed) · Env (collapsed) -->
+    <div class="col fade d3">
 
-      <!-- Weather -->
-      <div class="card fade d3">
-        <div class="card-header">
-          <div class="card-label">// Weather</div>
-          <button class="card-action" onclick="fetchWeather()">↻ refresh</button>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Weather</div>
+          <button class="sec-btn">+</button>
         </div>
-        <div id="weather-content">
-          <div id="weather-loading">Locating...</div>
+        <div class="sec-body closed" id="wx-body" style="max-height:0">
+          <div id="wx-content"><div id="wx-msg">Locating...</div></div>
+          <button class="wx-refresh" onclick="fetchWx()">↻ refresh</button>
         </div>
       </div>
 
-      <!-- Focus -->
-      <div class="card fade d4" style="background:var(--surface2)">
-        <div class="card-label" style="margin-bottom:10px">// Today's focus</div>
-        <div class="focus-wrap">
-          <div class="focus-dot"></div>
-          <input id="focus-input" type="text" placeholder="What are you building today?" maxlength="80"/>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Today's Focus</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:200px">
+          <div class="focus-wrap">
+            <div class="fpulse"></div>
+            <input id="focus-in" type="text" placeholder="What are you building today?" maxlength="80"/>
+          </div>
         </div>
       </div>
 
-      <!-- Build Streak -->
-      <div class="card fade d5">
-        <div class="card-header">
-          <div class="card-label">// Build streak</div>
-          <button class="card-action" onclick="clearStreak()">clear</button>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Build Streak</div>
+          <button class="sec-btn">+</button>
         </div>
-        <div class="streak-row">
-          <div class="streak-day" data-day="1"><div class="streak-dot"></div><span class="s-label">M</span></div>
-          <div class="streak-day" data-day="2"><div class="streak-dot"></div><span class="s-label">T</span></div>
-          <div class="streak-day" data-day="3"><div class="streak-dot"></div><span class="s-label">W</span></div>
-          <div class="streak-day" data-day="4"><div class="streak-dot"></div><span class="s-label">T</span></div>
-          <div class="streak-day" data-day="5"><div class="streak-dot"></div><span class="s-label">F</span></div>
-          <div class="streak-day" data-day="6"><div class="streak-dot"></div><span class="s-label">S</span></div>
-          <div class="streak-day" data-day="0"><div class="streak-dot"></div><span class="s-label">S</span></div>
-        </div>
-        <div class="streak-count" id="streak-count">0 / 7 days</div>
-      </div>
-
-    </div>
-
-    <!-- CENTER -->
-    <div style="display:flex;flex-direction:column;gap:14px">
-
-      <!-- To-Do List -->
-      <div class="card fade d3">
-        <div class="card-header">
-          <div class="card-label">// To-do list</div>
-          <button class="card-action" onclick="clearDone()">clear done</button>
-        </div>
-        <div class="todo-input-row">
-          <input id="todo-input" type="text" placeholder="Add a task..." maxlength="80"
-            onkeydown="if(event.key==='Enter') addTodo()"/>
-          <button class="todo-add-btn" onclick="addTodo()">+ Add</button>
-        </div>
-        <div class="todo-list" id="todo-list">
-          <div class="todo-empty" id="todo-empty">No tasks yet — add one above.</div>
-        </div>
-        <div class="todo-footer">
-          <span class="card-label" id="todo-count">0 tasks</span>
+        <div class="sec-body closed" style="max-height:0">
+          <div class="streak-row">
+            <div class="sd" data-d="1"><div class="sdot"></div><span class="dl">M</span></div>
+            <div class="sd" data-d="2"><div class="sdot"></div><span class="dl">T</span></div>
+            <div class="sd" data-d="3"><div class="sdot"></div><span class="dl">W</span></div>
+            <div class="sd" data-d="4"><div class="sdot"></div><span class="dl">T</span></div>
+            <div class="sd" data-d="5"><div class="sdot"></div><span class="dl">F</span></div>
+            <div class="sd" data-d="6"><div class="sdot"></div><span class="dl">S</span></div>
+            <div class="sd" data-d="0"><div class="sdot"></div><span class="dl">S</span></div>
+          </div>
+          <div class="streak-ct" id="s-ct">0 / 7</div>
         </div>
       </div>
 
-      <!-- Active Projects -->
-      <div class="card fade d4">
-        <div class="card-label" style="margin-bottom:12px">// Active projects</div>
-        <div class="pipeline" id="pipeline"></div>
-        <button class="add-btn" onclick="openModal()">+ add project</button>
-      </div>
-
-      <!-- Notes -->
-      <div class="card fade d5">
-        <div class="card-header">
-          <div class="card-label">// Quick notes</div>
-          <button class="card-action" onclick="clearNotes()">clear</button>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Environment</div>
+          <button class="sec-btn">+</button>
         </div>
-        <textarea id="notes-input" placeholder="Jot something down...&#10;Ideas, reminders, links — anything."></textarea>
-        <div class="notes-footer" id="notes-footer">0 chars</div>
+        <div class="sec-body closed" style="max-height:0">
+          <div class="env-row">
+            <div class="epill"><div class="edot eg"></div>Personal</div>
+            <div class="epill"><div class="edot ea"></div>Firefox</div>
+            <div class="epill"><div class="edot eg"></div>iCloud</div>
+          </div>
+        </div>
       </div>
 
     </div>
 
-    <!-- RIGHT -->
-    <div style="display:flex;flex-direction:column;gap:14px">
+    <!-- COL 2: Tasks/Notes tabbed + Projects -->
+    <div class="col fade d4">
 
-      <!-- AI Tools -->
-      <div class="card fade d3">
-        <div class="card-label" style="margin-bottom:10px">// AI tools</div>
-        <a class="link-item" href="https://chatgpt.com" target="_blank">
-          <div class="link-icon" style="background:rgba(16,163,127,0.15)">🤖</div>
-          <div><div>ChatGPT</div><div class="link-sub">Personal project →</div></div>
-        </a>
-        <a class="link-item" href="https://claude.ai" target="_blank">
-          <div class="link-icon" style="background:rgba(200,160,100,0.15)">⚡</div>
-          <div><div>Claude</div><div class="link-sub">Anthropic</div></div>
-        </a>
-        <a class="link-item" href="https://uxpilot.ai" target="_blank">
-          <div class="link-icon" style="background:rgba(99,102,241,0.18)">🎨</div>
-          <div><div>UX Pilot</div><div class="link-sub">AI design assistant</div></div>
-        </a>
-        <a class="link-item" href="https://wispr.ai" target="_blank">
-          <div class="link-icon" style="background:rgba(56,217,245,0.12)">🎙️</div>
-          <div><div>Wispr AI</div><div class="link-sub">Voice to text</div></div>
-        </a>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Workspace</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:600px">
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab('tasks',this)">Tasks</button>
+            <button class="tab" onclick="switchTab('notes',this)">Notes</button>
+          </div>
+          <div class="tab-panel active" id="panel-tasks">
+            <div class="todo-row">
+              <input id="todo-in" type="text" placeholder="Add a task..." maxlength="80"
+                onkeydown="if(event.key==='Enter')addTodo()"/>
+              <button class="tbtn" onclick="addTodo()">Add</button>
+            </div>
+            <div class="todo-list" id="todo-list">
+              <div class="t-empty" id="todo-empty">No tasks yet.</div>
+            </div>
+            <div class="todo-ft">
+              <span id="todo-ct">0 tasks</span>
+              <button class="clr-btn" onclick="clearDone()">Clear done</button>
+            </div>
+          </div>
+          <div class="tab-panel" id="panel-notes">
+            <textarea id="notes-ta" placeholder="Jot something down — ideas, links, thoughts..."></textarea>
+            <div class="notes-ft" id="notes-ft">0 chars</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Finance -->
-      <div class="card fade d4">
-        <div class="card-label" style="margin-bottom:10px">// Finance</div>
-        <a class="link-item" href="https://bankofamerica.com" target="_blank">
-          <div class="link-icon" style="background:rgba(206,17,38,0.15)">🏦</div>
-          <div><div>Bank of America</div><div class="link-sub">Banking</div></div>
-        </a>
-        <a class="link-item" href="https://robinhood.com" target="_blank">
-          <div class="link-icon" style="background:rgba(0,200,120,0.15)">📈</div>
-          <div><div>Robinhood</div><div class="link-sub">Investing</div></div>
-        </a>
-        <a class="link-item" href="https://fidelity.com" target="_blank">
-          <div class="link-icon" style="background:rgba(0,90,180,0.2)">💼</div>
-          <div><div>Fidelity</div><div class="link-sub">Investments & retirement</div></div>
-        </a>
-      </div>
-
-      <!-- Environment -->
-      <div class="card fade d5">
-        <div class="card-label" style="margin-bottom:10px">// Environment</div>
-        <div class="status-row">
-          <div class="status-pill"><div class="s-dot dot-g"></div>Personal</div>
-          <div class="status-pill"><div class="s-dot dot-a"></div>Firefox</div>
-          <div class="status-pill"><div class="s-dot dot-g"></div>iCloud</div>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Active Projects</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:400px">
+          <div id="proj-list"></div>
+          <button class="add-proj" onclick="openModal()">+ Add project</button>
         </div>
       </div>
 
     </div>
+
+    <!-- COL 3: AI Tools · Finance -->
+    <div class="col fade d5">
+
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">AI Tools</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:500px">
+          <a class="lnk" href="https://chatgpt.com" target="_blank" data-track="ChatGPT">
+            <div class="lnk-ico">🤖</div>
+            <div class="lnk-info"><div class="lnk-name">ChatGPT</div><div class="lnk-sub">Personal project →</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://claude.ai" target="_blank" data-track="Claude">
+            <div class="lnk-ico">⚡</div>
+            <div class="lnk-info"><div class="lnk-name">Claude</div><div class="lnk-sub">Anthropic</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://uxpilot.ai" target="_blank" data-track="UX Pilot">
+            <div class="lnk-ico">🎨</div>
+            <div class="lnk-info"><div class="lnk-name">UX Pilot</div><div class="lnk-sub">AI design</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://wispr.ai" target="_blank" data-track="Wispr AI">
+            <div class="lnk-ico">🎙️</div>
+            <div class="lnk-info"><div class="lnk-name">Wispr AI</div><div class="lnk-sub">Voice to text</div></div>
+            <span class="larr">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Finance</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:400px">
+          <a class="lnk" href="https://bankofamerica.com" target="_blank" data-track="Bank of America">
+            <div class="lnk-ico">🏦</div>
+            <div class="lnk-info"><div class="lnk-name">Bank of America</div><div class="lnk-sub">Banking</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://sofi.com" target="_blank" data-track="SoFi">
+            <div class="lnk-ico">💳</div>
+            <div class="lnk-info"><div class="lnk-name">SoFi</div><div class="lnk-sub">Banking & investing</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://robinhood.com" target="_blank" data-track="Robinhood">
+            <div class="lnk-ico">📈</div>
+            <div class="lnk-info"><div class="lnk-name">Robinhood</div><div class="lnk-sub">Investing</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://fidelity.com" target="_blank" data-track="Fidelity">
+            <div class="lnk-ico">💼</div>
+            <div class="lnk-info"><div class="lnk-name">Fidelity</div><div class="lnk-sub">Investments</div></div>
+            <span class="larr">↗</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COL 4: Social · Dev Tools -->
+    <div class="col fade d6">
+
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Social</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:300px">
+          <a class="lnk" href="https://youtube.com" target="_blank" data-track="YouTube">
+            <div class="lnk-ico">▶️</div>
+            <div class="lnk-info"><div class="lnk-name">YouTube</div><div class="lnk-sub">Most visited</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://reddit.com" target="_blank" data-track="Reddit">
+            <div class="lnk-ico">🟠</div>
+            <div class="lnk-info"><div class="lnk-name">Reddit</div><div class="lnk-sub">Browse</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://twitter.com" target="_blank" data-track="Twitter">
+            <div class="lnk-ico" style="font-size:10px;font-weight:600">𝕏</div>
+            <div class="lnk-info"><div class="lnk-name">Twitter / X</div><div class="lnk-sub">Feed</div></div>
+            <span class="larr">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Dev Tools</div>
+          <button class="sec-btn">−</button>
+        </div>
+        <div class="sec-body open" style="max-height:400px">
+          <a class="lnk" href="https://github.com" target="_blank" data-track="GitHub">
+            <div class="lnk-ico">🐙</div>
+            <div class="lnk-info"><div class="lnk-name">GitHub</div><div class="lnk-sub">Repos & code</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://cursor.sh" target="_blank" data-track="Cursor">
+            <div class="lnk-ico">⌨️</div>
+            <div class="lnk-info"><div class="lnk-name">Cursor</div><div class="lnk-sub">AI editor</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://vercel.com" target="_blank" data-track="Vercel">
+            <div class="lnk-ico" style="font-size:10px;font-weight:700">▲</div>
+            <div class="lnk-info"><div class="lnk-name">Vercel</div><div class="lnk-sub">Deploy & host</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://netlify.com" target="_blank" data-track="Netlify">
+            <div class="lnk-ico">🌐</div>
+            <div class="lnk-info"><div class="lnk-name">Netlify</div><div class="lnk-sub">Deploy & host</div></div>
+            <span class="larr">↗</span>
+          </a>
+          <a class="lnk" href="https://vscode.dev" target="_blank" data-track="VS Code">
+            <div class="lnk-ico">🖥️</div>
+            <div class="lnk-info"><div class="lnk-name">VS Code Web</div><div class="lnk-sub">Browser editor</div></div>
+            <span class="larr">↗</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- BOTTOM BAR -->
-  <footer class="bottombar">
-    <div class="bottom-left">
-      <div class="bottom-pulse"></div>
-      <span>Personal · Admin · Mac</span>
-    </div>
-    <div class="bottom-right">STARTING ZONE v3.0</div>
+  <footer>
+    <div class="ft-l"><div class="ft-pulse"></div><span>PERSONAL · ADMIN · MAC</span></div>
+    <div class="ft-r">Command Center v4.2</div>
   </footer>
 
 </div>
 
 <script>
-// ══════════════════════════════════════════
-// CLOCK — instant, no lag
-// ══════════════════════════════════════════
-const DAYS   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
-const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-
-function updateClock() {
-  const now = new Date();
-  let h = now.getHours();
-  const m  = now.getMinutes();
-  const per = h >= 12 ? 'PM' : 'AM';
-  h = h % 12 || 12;
-  document.getElementById('nh').textContent  = String(h).padStart(2,'0');
-  document.getElementById('nm').textContent  = String(m).padStart(2,'0');
-  document.getElementById('nav-period').textContent = per;
-  document.getElementById('nav-date').textContent   =
-    `${DAYS[now.getDay()]} · ${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+// ── CLOCK ──
+const DAYS=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+const MONS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+function tick(){
+  const n=new Date();let h=n.getHours();const m=n.getMinutes();
+  const p=h>=12?'PM':'AM';h=h%12||12;
+  document.getElementById('nh').textContent=String(h).padStart(2,'0');
+  document.getElementById('nm').textContent=String(m).padStart(2,'0');
+  document.getElementById('nav-period').textContent=p;
+  document.getElementById('nav-date').textContent=`${DAYS[n.getDay()]} · ${MONS[n.getMonth()]} ${n.getDate()}, ${n.getFullYear()}`;
 }
-updateClock();
-setInterval(updateClock, 1000);
+tick();setInterval(tick,1000);
 
-// ══════════════════════════════════════════
-// TAGLINE
-// ══════════════════════════════════════════
-const taglines = [
-  "Let's build something today.",
-  "What are you shipping?",
-  "One commit at a time.",
-  "Start before you're ready.",
-  "Make it work. Then make it great.",
-  "The best time to start was yesterday.",
-  "Every expert was once a beginner.",
+// ── QUOTES ──
+const quotes=[
+  {t:"The best way to predict the future is to <em>build it.</em>",b:"— Alan Kay"},
+  {t:"Done is better than <em>perfect.</em>",b:"— Sheryl Sandberg"},
+  {t:"You don't need permission to <em>start.</em>",b:"— Command Center"},
+  {t:"Shipping is a feature. A <em>damn good one.</em>",b:"— Joel Spolsky"},
+  {t:"The secret to getting ahead is <em>getting started.</em>",b:"— Mark Twain"},
+  {t:"Chase the vision, not the money. <em>The money will follow.</em>",b:"— Tony Hsieh"},
+  {t:"It's not about ideas. It's about <em>making ideas happen.</em>",b:"— Scott Belsky"},
+  {t:"The only way to do great work is to <em>love what you do.</em>",b:"— Steve Jobs"},
+  {t:"Stay hungry. <em>Stay foolish.</em>",b:"— Steve Jobs"},
+  {t:"Risk comes from not knowing <em>what you're doing.</em>",b:"— Warren Buffett"},
+  {t:"Compound interest is the eighth wonder <em>of the world.</em>",b:"— Albert Einstein"},
+  {t:"Price is what you pay. <em>Value is what you get.</em>",b:"— Warren Buffett"},
+  {t:"An investment in knowledge <em>pays the best interest.</em>",b:"— Benjamin Franklin"},
+  {t:"It's not how much money you make, but how much <em>you keep.</em>",b:"— Robert Kiyosaki"},
+  {t:"Never depend on a single income. <em>Make investments to create a second source.</em>",b:"— Warren Buffett"},
+  {t:"Your brand is what people say about you <em>when you're not in the room.</em>",b:"— Jeff Bezos"},
+  {t:"If you're not embarrassed by v1 of your product, <em>you launched too late.</em>",b:"— Reid Hoffman"},
+  {t:"The way to get started is to <em>quit talking and begin doing.</em>",b:"— Walt Disney"},
+  {t:"Business opportunities are like buses — <em>there's always another one coming.</em>",b:"— Richard Branson"},
+  {t:"Move fast and <em>break things.</em>",b:"— Mark Zuckerberg"},
+  {t:"Your most unhappy customers are your <em>greatest source of learning.</em>",b:"— Bill Gates"},
 ];
-document.getElementById('tagline').textContent =
-  taglines[Math.floor(Math.random() * taglines.length)];
+let qi=Math.floor(Math.random()*quotes.length);
+function setQ(q){document.getElementById('q-line').innerHTML=q.t;document.getElementById('q-by').textContent=q.b;}
+setQ(quotes[qi]);
+setInterval(()=>{
+  qi=(qi+1)%quotes.length;
+  const el=document.getElementById('q-line');
+  el.style.opacity=0;
+  setTimeout(()=>{setQ(quotes[qi]);el.style.opacity=1;},500);
+},35000);
 
-// ══════════════════════════════════════════
-// QUOTES
-// ══════════════════════════════════════════
-const quotes = [
-  { t:"Ideas don't ship themselves. <em>You do.</em>",                   a:"— THE STARTING ZONE" },
-  { t:"The best way to predict the future is to <em>build it.</em>",     a:"— Alan Kay" },
-  { t:"Shipping is a feature. A <em>damn good one.</em>",                a:"— Joel Spolsky" },
-  { t:"Move fast. Stay curious. <em>Build things that matter.</em>",     a:"— Builder's Creed" },
-  { t:"You don't need permission to <em>start.</em>",                    a:"— THE STARTING ZONE" },
-  { t:"Done is better than <em>perfect.</em>",                           a:"— Sheryl Sandberg" },
-  { t:"An idea not paired with action will <em>never get bigger.</em>",  a:"— Sparky Anderson" },
-  { t:"Code is how you <em>push the world forward.</em>",                a:"— Ryan Dahl" },
-];
-
-let qi = Math.floor(Math.random() * quotes.length);
-function setQuote(q) {
-  document.getElementById('q-text').innerHTML = q.t;
-  document.getElementById('q-attr').textContent = q.a;
-  // mini version in nav (plain text)
-  const plain = q.t.replace(/<[^>]+>/g,'');
-  document.getElementById('nav-quote-mini').textContent =
-    plain.length > 55 ? plain.slice(0,52)+'…' : plain;
+// ── SEARCH ──
+function runSearch(){
+  const q=document.getElementById('search-input').value.trim();
+  if(!q)return;
+  window.open('https://duckduckgo.com/?q='+encodeURIComponent(q),'_blank');
+  document.getElementById('search-input').value='';
 }
-setQuote(quotes[qi]);
-setInterval(() => {
-  qi = (qi + 1) % quotes.length;
-  const el = document.getElementById('q-text');
-  el.style.opacity = 0;
-  setTimeout(() => { setQuote(quotes[qi]); el.style.opacity = 1; }, 500);
-}, 10000);
-
-// ══════════════════════════════════════════
-// SEARCH — uses window.open to bypass moz-extension restriction
-// ══════════════════════════════════════════
-function runSearch() {
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return;
-  window.open('https://duckduckgo.com/?q=' + encodeURIComponent(q), '_blank');
-  document.getElementById('search-input').value = '';
+function go(url,name){
+  if(name)trackVisit(name);
+  window.open(url,'_blank');
 }
 
-function searchFor(term) {
-  window.open('https://duckduckgo.com/?q=' + encodeURIComponent(term), '_blank');
-}
-
-// ══════════════════════════════════════════
-// WEATHER — Open-Meteo (no API key needed)
-// ══════════════════════════════════════════
-const WX_CODES = {
-  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
-  45:'🌫️',48:'🌫️',
-  51:'🌦️',53:'🌦️',55:'🌧️',
-  61:'🌧️',63:'🌧️',65:'🌧️',
-  71:'❄️',73:'❄️',75:'❄️',
-  80:'🌦️',81:'🌧️',82:'⛈️',
-  95:'⛈️',96:'⛈️',99:'⛈️',
-};
-const WX_DESC = {
-  0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',
-  45:'Foggy',48:'Icy fog',
-  51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
-  61:'Light rain',63:'Rain',65:'Heavy rain',
-  71:'Light snow',73:'Snow',75:'Heavy snow',
-  80:'Rain showers',81:'Heavy showers',82:'Violent showers',
-  95:'Thunderstorm',96:'Thunderstorm w/ hail',99:'Thunderstorm',
-};
-
-function fetchWeather() {
-  const el = document.getElementById('weather-content');
-  el.innerHTML = '<div id="weather-loading">Locating...</div>';
-  if (!navigator.geolocation) {
-    el.innerHTML = '<div id="weather-loading">Geolocation not available.</div>'; return;
+// ── SECTION TOGGLE ──
+function toggleSec(head){
+  const body=head.nextElementSibling;
+  const btn=head.querySelector('.sec-btn');
+  const isOpen=body.classList.contains('open');
+  if(isOpen){
+    body.style.maxHeight='0';
+    body.classList.remove('open');
+    body.classList.add('closed');
+    btn.textContent='+';
+  } else {
+    body.classList.remove('closed');
+    body.classList.add('open');
+    body.style.maxHeight=body.scrollHeight+300+'px';
+    btn.textContent='−';
   }
-  navigator.geolocation.getCurrentPosition(async pos => {
-    const { latitude: lat, longitude: lon } = pos.coords;
-    try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,windspeed_10m&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=auto`;
-      const res  = await fetch(url);
-      const data = await res.json();
-      const cw   = data.current_weather;
-      const code = cw.weathercode;
-      const icon = WX_CODES[code] || '🌡️';
-      const desc = WX_DESC[code]  || 'Unknown';
-      const temp = Math.round(cw.temperature);
-      const wind = Math.round(cw.windspeed);
-      const hi   = cw.is_day ? '🌅 Day' : '🌙 Night';
-
-      // get humidity from first hourly entry
-      const hum = data.hourly?.relativehumidity_2m?.[0] ?? '—';
-
-      el.innerHTML = `
-        <div class="weather-main">
-          <div class="weather-icon">${icon}</div>
-          <div><span class="weather-temp">${temp}</span><span class="weather-unit">°F</span></div>
-        </div>
-        <div class="weather-desc">${desc}</div>
-        <div class="weather-meta">
-          <div class="weather-pill">💨 ${wind} mph</div>
-          <div class="weather-pill">💧 ${hum}%</div>
-          <div class="weather-pill">${hi}</div>
-        </div>
-        <div class="weather-location">📍 ${lat.toFixed(2)}, ${lon.toFixed(2)}</div>
-      `;
-    } catch {
-      el.innerHTML = '<div id="weather-loading">Could not load weather.</div>';
-    }
-  }, () => {
-    el.innerHTML = '<div id="weather-loading">Location denied. Click ↻ to retry.</div>';
-  });
 }
 
-fetchWeather();
+// ── TABS ──
+function switchTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
 
-// ══════════════════════════════════════════
-// INDEXEDDB STORAGE
-// ══════════════════════════════════════════
+// ── WEATHER ──
+const WX_ICO={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'❄️',73:'❄️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WX_DESC={0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Icy fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Heavy showers',82:'Violent showers',95:'Thunderstorm',96:'Thunderstorm w/ hail',99:'Thunderstorm'};
+function fetchWx(){
+  const el=document.getElementById('wx-content');
+  el.innerHTML='<div id="wx-msg">Locating...</div>';
+  if(!navigator.geolocation){el.innerHTML='<div id="wx-msg">Geolocation unavailable.</div>';return;}
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    try{
+      const{latitude:la,longitude:lo}=pos.coords;
+      const d=await(await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${lo}&current_weather=true&hourly=relativehumidity_2m&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=auto`)).json();
+      const cw=d.current_weather;const code=cw.weathercode;
+      const hum=d.hourly?.relativehumidity_2m?.[0]??'—';
+      el.innerHTML=`<div class="wx-main"><div class="wx-ico">${WX_ICO[code]||'🌡️'}</div><div><span class="wx-temp">${Math.round(cw.temperature)}</span><span class="wx-unit">°F</span></div></div><div class="wx-desc">${WX_DESC[code]||'Unknown'}</div><div class="wx-pills"><div class="wx-pill">💨 ${Math.round(cw.windspeed)} mph</div><div class="wx-pill">💧 ${hum}%</div><div class="wx-pill">${cw.is_day?'🌅 Day':'🌙 Night'}</div></div><div class="wx-loc">📍 ${la.toFixed(2)}, ${lo.toFixed(2)}</div>`;
+      const body=document.getElementById('wx-body');
+      if(body.classList.contains('open'))body.style.maxHeight=body.scrollHeight+60+'px';
+    }catch{el.innerHTML='<div id="wx-msg">Could not load weather.</div>';}
+  },()=>{document.getElementById('wx-content').innerHTML='<div id="wx-msg">Location denied — click refresh.</div>';});
+}
+
+// ── INDEXEDDB ──
 let db;
-function openDB() {
-  return new Promise((res, rej) => {
-    const req = indexedDB.open('cc_zone_v3', 1);
-    req.onupgradeneeded = e => e.target.result.createObjectStore('kv');
-    req.onsuccess = e => { db = e.target.result; res(); };
-    req.onerror   = () => rej();
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open('cc_v4',1);
+    r.onupgradeneeded=e=>e.target.result.createObjectStore('kv');
+    r.onsuccess=e=>{db=e.target.result;res();};
+    r.onerror=()=>rej();
   });
 }
-function dbGet(k) {
-  return new Promise(res => {
-    try {
-      const req = db.transaction('kv','readonly').objectStore('kv').get(k);
-      req.onsuccess = () => res(req.result ?? null);
-      req.onerror   = () => res(null);
-    } catch { res(null); }
-  });
-}
-function dbSet(k, v) {
-  try { db.transaction('kv','readwrite').objectStore('kv').put(v, k); }
-  catch(e) { console.warn('dbSet', e); }
+function dbG(k){return new Promise(res=>{try{const r=db.transaction('kv','readonly').objectStore('kv').get(k);r.onsuccess=()=>res(r.result??null);r.onerror=()=>res(null);}catch{res(null);}});}
+function dbS(k,v){try{db.transaction('kv','readwrite').objectStore('kv').put(v,k);}catch(e){}}
+
+// ── DYNAMIC CHIPS (visit tracking) ──
+const CHIP_SITES=[
+  {name:'YouTube',  url:'https://youtube.com'},
+  {name:'GitHub',   url:'https://github.com'},
+  {name:'ChatGPT',  url:'https://chatgpt.com'},
+  {name:'Claude',   url:'https://claude.ai'},
+  {name:'Vercel',   url:'https://vercel.com'},
+  {name:'Reddit',   url:'https://reddit.com'},
+  {name:'Robinhood',url:'https://robinhood.com'},
+  {name:'Cursor',   url:'https://cursor.sh'},
+  {name:'SoFi',     url:'https://sofi.com'},
+  {name:'Fidelity', url:'https://fidelity.com'},
+  {name:'Twitter',  url:'https://twitter.com'},
+  {name:'Netlify',  url:'https://netlify.com'},
+];
+
+async function trackVisit(name){
+  const counts=(await dbG('visits'))||{};
+  counts[name]=(counts[name]||0)+1;
+  dbS('visits',counts);
+  renderChips(counts);
 }
 
-// ══════════════════════════════════════════
-// FOCUS
-// ══════════════════════════════════════════
-async function initFocus() {
-  const el = document.getElementById('focus-input');
-  const v  = await dbGet('focus');
-  if (v) el.value = v;
-  el.addEventListener('input', () => dbSet('focus', el.value));
-}
-
-// ══════════════════════════════════════════
-// STREAK
-// ══════════════════════════════════════════
-async function initStreak() {
-  const saved = (await dbGet('streak')) || [];
-  renderStreak(saved);
-  document.querySelectorAll('.streak-day').forEach(day => {
-    day.addEventListener('click', async () => {
-      const cur = (await dbGet('streak')) || [];
-      const d   = day.dataset.day;
-      const upd = cur.includes(d) ? cur.filter(x=>x!==d) : [...cur, d];
-      dbSet('streak', upd);
-      renderStreak(upd);
-    });
-  });
-}
-
-function renderStreak(active) {
-  document.querySelectorAll('.streak-day').forEach(d =>
-    d.classList.toggle('active', active.includes(d.dataset.day))
-  );
-  document.getElementById('streak-count').textContent = `${active.length} / 7 days`;
-}
-
-async function clearStreak() {
-  dbSet('streak', []);
-  renderStreak([]);
-}
-
-// ══════════════════════════════════════════
-// NOTES
-// ══════════════════════════════════════════
-async function initNotes() {
-  const el = document.getElementById('notes-input');
-  const v  = await dbGet('notes');
-  if (v) el.value = v;
-  updateNotesFooter(el.value);
-  el.addEventListener('input', () => {
-    dbSet('notes', el.value);
-    updateNotesFooter(el.value);
+async function renderChips(counts){
+  if(!counts)counts=(await dbG('visits'))||{};
+  const row=document.getElementById('chips-row');
+  // sort by visit count desc, fallback to original order
+  const sorted=[...CHIP_SITES].sort((a,b)=>((counts[b.name]||0)-(counts[a.name]||0)));
+  const top=sorted.slice(0,7);
+  row.innerHTML='';
+  top.forEach(site=>{
+    const ct=counts[site.name]||0;
+    const btn=document.createElement('button');
+    btn.className='chip';
+    btn.innerHTML=site.name+(ct>0?` <span class="chip-ct">${ct}</span>`:'');
+    btn.onclick=()=>go(site.url,site.name);
+    row.appendChild(btn);
   });
 }
 
-function updateNotesFooter(v) {
-  document.getElementById('notes-footer').textContent = `${v.length} chars`;
-}
-
-async function clearNotes() {
-  document.getElementById('notes-input').value = '';
-  dbSet('notes', '');
-  updateNotesFooter('');
-}
-
-// ══════════════════════════════════════════
-// TO-DO LIST
-// ══════════════════════════════════════════
-async function initTodos() {
-  const todos = (await dbGet('todos')) || [];
-  renderTodos(todos);
-}
-
-async function addTodo() {
-  const inp  = document.getElementById('todo-input');
-  const text = inp.value.trim();
-  if (!text) return;
-  const todos = (await dbGet('todos')) || [];
-  todos.push({ id: Date.now(), text, done: false });
-  dbSet('todos', todos);
-  renderTodos(todos);
-  inp.value = '';
-}
-
-async function toggleTodo(id) {
-  const todos = (await dbGet('todos')) || [];
-  const upd   = todos.map(t => t.id === id ? {...t, done: !t.done} : t);
-  dbSet('todos', upd);
-  renderTodos(upd);
-}
-
-async function deleteTodo(id) {
-  const todos = (await dbGet('todos')) || [];
-  const upd   = todos.filter(t => t.id !== id);
-  dbSet('todos', upd);
-  renderTodos(upd);
-}
-
-async function clearDone() {
-  const todos = (await dbGet('todos')) || [];
-  const upd   = todos.filter(t => !t.done);
-  dbSet('todos', upd);
-  renderTodos(upd);
-}
-
-function renderTodos(todos) {
-  const list  = document.getElementById('todo-list');
-  const empty = document.getElementById('todo-empty');
-  const count = document.getElementById('todo-count');
-
-  list.querySelectorAll('.todo-item').forEach(el => el.remove());
-
-  if (todos.length === 0) {
-    empty.style.display = 'block';
-    count.textContent = '0 tasks';
-    return;
-  }
-  empty.style.display = 'none';
-  count.textContent = `${todos.filter(t=>!t.done).length} remaining`;
-
-  todos.forEach(todo => {
-    const item = document.createElement('div');
-    item.className = 'todo-item' + (todo.done ? ' done' : '');
-    item.innerHTML = `
-      <div class="todo-check" onclick="toggleTodo(${todo.id})">${todo.done ? '✓' : ''}</div>
-      <div class="todo-text">${escHtml(todo.text)}</div>
-      <div class="todo-del" onclick="deleteTodo(${todo.id})">✕</div>
-    `;
-    list.appendChild(item);
-  });
-}
-
-// ══════════════════════════════════════════
-// PROJECTS
-// ══════════════════════════════════════════
-const PC = {
-  'IN PROGRESS': { c:'var(--green)',  s:'rgba(61,255,160,0.5)' },
-  'BACKLOG':     { c:'var(--muted2)', s:'transparent' },
-  'DONE':        { c:'var(--cyan)',   s:'rgba(56,217,245,0.5)' },
-  'PAUSED':      { c:'var(--amber)',  s:'rgba(255,158,44,0.5)' },
-};
-
-async function renderProjects() {
-  let all = await dbGet('projects');
-  if (!all) {
-    all = [
-      { id:1, name:'Project OS', status:'IN PROGRESS' },
-      { id:2, name:'HyStats',    status:'IN PROGRESS' },
-    ];
-    dbSet('projects', all);
-  }
-  const pipeline = document.getElementById('pipeline');
-  pipeline.innerHTML = '';
-  if (!all.length) {
-    pipeline.innerHTML = `<div style="font-size:11px;color:var(--muted2);padding:6px 0;font-style:italic">No projects yet.</div>`;
-    return;
-  }
-  all.forEach(proj => {
-    const c = PC[proj.status] || PC['BACKLOG'];
-    const el = document.createElement('div');
-    el.className = 'pipeline-item';
-    el.innerHTML = `
-      <div class="p-dot" style="background:${c.c};box-shadow:0 0 7px ${c.s}"></div>
-      <div class="p-name">${escHtml(proj.name)}</div>
-      <div class="p-tag" title="Click to cycle status">${proj.status}</div>
-      <div class="p-del" title="Delete">✕</div>
-    `;
-    el.querySelector('.p-tag').addEventListener('click', async e => {
-      e.stopPropagation();
-      const cycle = ['IN PROGRESS','BACKLOG','DONE','PAUSED'];
-      proj.status = cycle[(cycle.indexOf(proj.status)+1) % cycle.length];
-      const updated = ((await dbGet('projects'))||[]).map(p=>p.id===proj.id?proj:p);
-      dbSet('projects', updated);
-      renderProjects();
-    });
-    el.querySelector('.p-del').addEventListener('click', async e => {
-      e.stopPropagation();
-      const updated = ((await dbGet('projects'))||[]).filter(p=>p.id!==proj.id);
-      dbSet('projects', updated);
-      renderProjects();
-    });
-    pipeline.appendChild(el);
-  });
-}
-
-function openModal() {
-  document.getElementById('m-name').value   = '';
-  document.getElementById('m-status').value = 'IN PROGRESS';
-  document.getElementById('modal').classList.add('open');
-  setTimeout(()=>document.getElementById('m-name').focus(), 100);
-}
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-async function saveProject() {
-  const name = document.getElementById('m-name').value.trim();
-  if (!name) { document.getElementById('m-name').focus(); return; }
-  const status = document.getElementById('m-status').value;
-  const all = (await dbGet('projects')) || [];
-  all.push({ id: Date.now(), name, status });
-  dbSet('projects', all);
-  renderProjects();
-  closeModal();
-}
-
-document.getElementById('modal').addEventListener('click', e => { if(e.target===document.getElementById('modal')) closeModal(); });
-document.addEventListener('keydown', e => {
-  if (e.key==='Escape') closeModal();
-  if (e.key==='Enter' && document.getElementById('modal').classList.contains('open')) saveProject();
+// ── LINK CLICK TRACKING ──
+document.querySelectorAll('.lnk[data-track]').forEach(a=>{
+  a.addEventListener('click',()=>trackVisit(a.dataset.track));
 });
 
-// ══════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// ── FOCUS ──
+async function initFocus(){
+  const el=document.getElementById('focus-in');
+  const v=await dbG('focus');if(v)el.value=v;
+  el.addEventListener('input',()=>dbS('focus',el.value));
 }
 
-// ══════════════════════════════════════════
-// BOOT
-// ══════════════════════════════════════════
-openDB().then(() => {
-  initFocus();
-  initStreak();
-  initNotes();
-  initTodos();
-  renderProjects();
-}).catch(() => {
-  // graceful fallback — UI still works, data won't persist
-  initStreak();
-  renderProjects();
-  initTodos();
+// ── STREAK ──
+async function initStreak(){
+  const saved=(await dbG('streak'))||[];
+  renderStreak(saved);
+  document.querySelectorAll('.sd').forEach(d=>{
+    d.addEventListener('click',async()=>{
+      const cur=(await dbG('streak'))||[];const dd=d.dataset.d;
+      const upd=cur.includes(dd)?cur.filter(x=>x!==dd):[...cur,dd];
+      dbS('streak',upd);renderStreak(upd);
+    });
+  });
+}
+function renderStreak(a){
+  document.querySelectorAll('.sd').forEach(d=>d.classList.toggle('on',a.includes(d.dataset.d)));
+  document.getElementById('s-ct').textContent=`${a.length} / 7`;
+}
+
+// ── NOTES ──
+async function initNotes(){
+  const el=document.getElementById('notes-ta');
+  const v=await dbG('notes');if(v)el.value=v;
+  updateNotesFt(el.value);
+  el.addEventListener('input',()=>{dbS('notes',el.value);updateNotesFt(el.value);});
+}
+function updateNotesFt(v){document.getElementById('notes-ft').textContent=`${v.length} chars`;}
+
+// ── TODO ──
+async function initTodos(){renderTodos((await dbG('todos'))||[]);}
+async function addTodo(){
+  const inp=document.getElementById('todo-in');const t=inp.value.trim();if(!t)return;
+  const all=(await dbG('todos'))||[];all.push({id:Date.now(),text:t,done:false});
+  dbS('todos',all);renderTodos(all);inp.value='';
+}
+async function toggleTodo(id){
+  const upd=((await dbG('todos'))||[]).map(t=>t.id===id?{...t,done:!t.done}:t);
+  dbS('todos',upd);renderTodos(upd);
+}
+async function deleteTodo(id){
+  const upd=((await dbG('todos'))||[]).filter(t=>t.id!==id);
+  dbS('todos',upd);renderTodos(upd);
+}
+async function clearDone(){
+  const upd=((await dbG('todos'))||[]).filter(t=>!t.done);
+  dbS('todos',upd);renderTodos(upd);
+}
+function renderTodos(todos){
+  const list=document.getElementById('todo-list');
+  const empty=document.getElementById('todo-empty');
+  const ct=document.getElementById('todo-ct');
+  list.querySelectorAll('.ti').forEach(e=>e.remove());
+  if(!todos.length){empty.style.display='block';ct.textContent='0 tasks';return;}
+  empty.style.display='none';
+  ct.textContent=`${todos.filter(t=>!t.done).length} remaining`;
+  todos.forEach(t=>{
+    const el=document.createElement('div');
+    el.className='ti'+(t.done?' done':'');
+    el.innerHTML=`<div class="ti-box" onclick="toggleTodo(${t.id})">${t.done?'✓':''}</div><div class="ti-txt">${esc(t.text)}</div><div class="ti-del" onclick="deleteTodo(${t.id})">✕</div>`;
+    list.appendChild(el);
+  });
+}
+
+// ── PROJECTS ──
+const PC={'IN PROGRESS':{c:'#4ade80',s:'rgba(74,222,128,.4)'},'BACKLOG':{c:'#3a3a36',s:'transparent'},'DONE':{c:'#67e8f9',s:'rgba(103,232,249,.4)'},'PAUSED':{c:'#f59e0b',s:'rgba(245,158,11,.4)'}};
+async function renderProjs(){
+  let all=await dbG('projects');
+  if(!all){all=[{id:1,name:'Project OS',status:'IN PROGRESS'},{id:2,name:'HyStats',status:'IN PROGRESS'}];dbS('projects',all);}
+  const list=document.getElementById('proj-list');list.innerHTML='';
+  if(!all.length){list.innerHTML='<div class="t-empty">No projects yet.</div>';return;}
+  all.forEach(p=>{
+    const c=PC[p.status]||PC['BACKLOG'];
+    const el=document.createElement('div');el.className='pi';
+    el.innerHTML=`<div class="pi-dot" style="background:${c.c};box-shadow:0 0 6px ${c.s}"></div><div class="pi-name">${esc(p.name)}</div><div class="pi-tag">${p.status}</div><div class="pi-del">✕</div>`;
+    el.querySelector('.pi-tag').addEventListener('click',async e=>{e.stopPropagation();const cy=['IN PROGRESS','BACKLOG','DONE','PAUSED'];p.status=cy[(cy.indexOf(p.status)+1)%cy.length];const upd=((await dbG('projects'))||[]).map(x=>x.id===p.id?p:x);dbS('projects',upd);renderProjs();});
+    el.querySelector('.pi-del').addEventListener('click',async e=>{e.stopPropagation();const upd=((await dbG('projects'))||[]).filter(x=>x.id!==p.id);dbS('projects',upd);renderProjs();});
+    list.appendChild(el);
+  });
+}
+function openModal(){document.getElementById('m-name').value='';document.getElementById('m-status').value='IN PROGRESS';document.getElementById('overlay').classList.add('open');setTimeout(()=>document.getElementById('m-name').focus(),100);}
+function closeModal(){document.getElementById('overlay').classList.remove('open');}
+async function saveProj(){const n=document.getElementById('m-name').value.trim();if(!n){document.getElementById('m-name').focus();return;}const s=document.getElementById('m-status').value;const all=(await dbG('projects'))||[];all.push({id:Date.now(),name:n,status:s});dbS('projects',all);renderProjs();closeModal();}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target===document.getElementById('overlay'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if(e.key==='Enter'&&document.getElementById('overlay').classList.contains('open'))saveProj();});
+
+// ── HELPERS ──
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ── BOOT ──
+openDB().then(()=>{
+  initFocus();initStreak();initNotes();initTodos();renderProjs();renderChips();fetchWx();
+}).catch(()=>{
+  renderChips({});initStreak();renderProjs();initTodos();
 });
 </script>
 </body>
