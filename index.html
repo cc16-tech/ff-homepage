@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CC — The Starting Zone</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #090e1a;
+  --surface:  #111a2e;
+  --surface2: #162035;
+  --surface3: #1c2840;
+  --border:   rgba(255,255,255,0.07);
+  --borderhi: rgba(255,255,255,0.14);
+  --gold:     #f0c060;
+  --amber:    #ff9e2c;
+  --cyan:     #38d9f5;
+  --green:    #3dffa0;
+  --red:      #ff5566;
+  --text:     #e8eaf0;
+  --muted:    #6b7a99;
+  --muted2:   #4a5570;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(240,192,96,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 85% 80%, rgba(56,217,245,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(61,255,160,0.03) 0%, transparent 60%);
+  pointer-events:none; z-index:0;
+}
+
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events:none; z-index:0;
+}
+
+/* ─── LAYOUT ─── */
+.page { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh; }
+
+/* ─── TOP NAV ─── */
+.topnav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  font-family:'Syne',sans-serif; font-weight:800; font-size:12px;
+  letter-spacing:0.28em; text-transform:uppercase; color:var(--gold); opacity:0.75;
+}
+
+.nav-center {
+  font-family:'Space Mono',monospace; font-size:10px; color:var(--muted);
+  letter-spacing:0.08em;
+}
+
+.nav-right {
+  display:flex; align-items:center; gap:14px;
+}
+
+#nav-clock {
+  font-family:'Space Mono',monospace; font-size:13px; font-weight:700;
+  color:var(--text); letter-spacing:0.05em;
+}
+
+#nav-clock .c-col { color:var(--gold); animation:blink 1s step-end infinite; }
+@keyframes blink { 50%{opacity:0.15} }
+
+#nav-period { font-size:10px; color:var(--muted); margin-left:3px; }
+
+#nav-date {
+  font-family:'Space Mono',monospace; font-size:10px; color:var(--muted);
+  letter-spacing:0.04em;
+}
+
+/* ─── HERO SECTION ─── */
+.hero {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding: 48px 20px 36px;
+  text-align:center;
+}
+
+.hero-greeting {
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:600;
+  letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:6px;
+}
+
+.hero-name {
+  font-family:'Syne',sans-serif; font-size:52px; font-weight:800;
+  color:var(--gold); line-height:1; margin-bottom:6px;
+  text-shadow: 0 0 60px rgba(240,192,96,0.25);
+}
+
+.hero-tagline {
+  font-size:13px; color:var(--muted); font-weight:300;
+  font-style:italic; margin-bottom:32px; min-height:20px;
+}
+
+/* ─── SEARCH BAR ─── */
+.search-wrap {
+  width:100%; max-width:620px;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+
+.search-bar {
+  width:100%;
+  display:flex; align-items:center;
+  background:var(--surface);
+  border:1px solid var(--borderhi);
+  border-radius:50px;
+  padding: 4px 4px 4px 22px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+.search-bar:focus-within {
+  border-color:var(--gold);
+  box-shadow: 0 0 0 3px rgba(240,192,96,0.1), 0 4px 24px rgba(0,0,0,0.3);
+}
+
+.search-duck { font-size:15px; margin-right:10px; opacity:0.6; flex-shrink:0; }
+
+#search-input {
+  flex:1; background:transparent; border:none; outline:none;
+  color:var(--text); font-family:'Inter',sans-serif; font-size:15px;
+  padding:11px 0; caret-color:var(--gold);
+}
+
+#search-input::placeholder { color:var(--muted2); }
+
+.search-btn {
+  background:var(--gold); color:#090e1a;
+  border:none; border-radius:40px;
+  padding:9px 22px;
+  font-family:'Space Mono',monospace; font-size:11px; font-weight:700;
+  letter-spacing:0.06em; cursor:pointer; transition:opacity 0.15s; flex-shrink:0;
+}
+.search-btn:hover { opacity:0.82; }
+
+.search-shortcuts {
+  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+}
+
+.shortcut-chip {
+  font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.08em;
+  color:var(--muted2); padding:4px 10px;
+  border:1px solid var(--border); border-radius:20px;
+  cursor:pointer; transition:all 0.15s; text-decoration:none;
+}
+.shortcut-chip:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ─── QUOTE TICKER ─── */
+.quote-ticker {
+  width:100%; max-width:520px;
+  text-align:center; margin-top:20px;
+}
+
+.quote-text {
+  font-family:'Syne',sans-serif; font-size:15px; font-weight:600;
+  color:var(--text); line-height:1.4; transition:opacity 0.5s;
+}
+
+.quote-text em { font-style:normal; color:var(--gold); }
+.quote-attr { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2); margin-top:6px; letter-spacing:0.1em; }
+
+/* ─── MAIN GRID ─── */
+.main-grid {
+  flex:1; display:grid;
+  grid-template-columns: 260px 1fr 260px;
+  gap:16px; padding:0 24px 24px;
+  align-items:start;
+}
+
+/* ─── CARD ─── */
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:18px; transition:border-color 0.2s;
+  position:relative; overflow:hidden;
+}
+.card:hover { border-color:var(--borderhi); }
+
+.card-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.card-label {
+  font-family:'Space Mono',monospace; font-size:9px;
+  letter-spacing:0.2em; text-transform:uppercase; color:var(--muted2);
+}
+
+.card-action {
+  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
+  cursor:pointer; transition:color 0.15s; border:none; background:transparent; letter-spacing:0.05em;
+}
+.card-action:hover { color:var(--gold); }
+
+/* ─── WEATHER ─── */
+.weather-main {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;
+}
+
+.weather-icon { font-size:36px; line-height:1; }
+
+.weather-temp {
+  font-family:'Syne',sans-serif; font-size:38px; font-weight:800; color:var(--text); line-height:1;
+}
+
+.weather-unit { font-size:18px; color:var(--muted); }
+
+.weather-desc {
+  font-size:12px; color:var(--muted); margin-bottom:10px; text-transform:capitalize;
+}
+
+.weather-meta {
+  display:flex; gap:8px; flex-wrap:wrap;
+}
+
+.weather-pill {
+  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
+  padding:3px 8px; border:1px solid var(--border); border-radius:12px;
+}
+
+.weather-location {
+  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
+  margin-top:8px; letter-spacing:0.05em;
+}
+
+#weather-loading { font-size:12px; color:var(--muted2); text-align:center; padding:10px 0; font-style:italic; }
+
+/* ─── FOCUS INPUT ─── */
+.focus-wrap { display:flex; align-items:center; gap:10px; }
+.focus-dot { width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;box-shadow:0 0 8px var(--amber); }
+
+#focus-input {
+  background:transparent; border:none; outline:none;
+  color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
+  width:100%; caret-color:var(--gold);
+}
+#focus-input::placeholder { color:var(--muted2); font-style:italic; }
+
+/* ─── BUILD STREAK ─── */
+.streak-row { display:flex; gap:4px; }
+
+.streak-day {
+  flex:1; height:38px; border-radius:6px;
+  background:rgba(255,255,255,0.04); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:3px;
+  cursor:pointer; transition:all 0.15s; user-select:none;
+}
+
+.streak-day:hover { border-color:var(--gold); }
+.streak-day.active { background:rgba(240,192,96,0.12); border-color:rgba(240,192,96,0.4); }
+
+.s-label { font-family:'Space Mono',monospace; font-size:8px; color:var(--muted2); }
+.streak-day.active .s-label { color:var(--gold); }
+
+.streak-dot { width:5px;height:5px;border-radius:50%;background:var(--muted2);transition:all 0.15s; }
+.streak-day.active .streak-dot { background:var(--gold);box-shadow:0 0 6px var(--gold); }
+
+.streak-count { font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;text-align:right; }
+
+/* ─── NOTES ─── */
+#notes-input {
+  width:100%; min-height:120px; background:transparent; border:none; outline:none;
+  color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
+  line-height:1.6; resize:none; caret-color:var(--gold);
+}
+#notes-input::placeholder { color:var(--muted2); font-style:italic; }
+
+.notes-footer {
+  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
+  margin-top:8px; text-align:right; letter-spacing:0.05em;
+}
+
+/* ─── TODO ─── */
+.todo-input-row {
+  display:flex; gap:8px; margin-bottom:12px;
+}
+
+#todo-input {
+  flex:1; background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; padding:8px 12px; color:var(--text);
+  font-family:'Inter',sans-serif; font-size:12px; outline:none;
+  caret-color:var(--gold); transition:border-color 0.15s;
+}
+#todo-input:focus { border-color:var(--gold); }
+#todo-input::placeholder { color:var(--muted2); }
+
+.todo-add-btn {
+  background:var(--gold); color:#090e1a; border:none; border-radius:8px;
+  padding:8px 14px; font-family:'Space Mono',monospace; font-size:10px;
+  font-weight:700; cursor:pointer; transition:opacity 0.15s; flex-shrink:0;
+}
+.todo-add-btn:hover { opacity:0.82; }
+
+.todo-list { display:flex; flex-direction:column; gap:5px; max-height:200px; overflow-y:auto; }
+
+.todo-item {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 10px; background:rgba(255,255,255,0.025);
+  border:1px solid var(--border); border-radius:8px; transition:all 0.15s;
+}
+.todo-item:hover { border-color:var(--borderhi); }
+.todo-item.done { opacity:0.4; }
+.todo-item.done .todo-text { text-decoration:line-through; }
+
+.todo-check {
+  width:16px; height:16px; border-radius:4px; border:1px solid var(--muted2);
+  cursor:pointer; flex-shrink:0; transition:all 0.15s;
+  display:flex; align-items:center; justify-content:center; font-size:9px;
+}
+.todo-item.done .todo-check { background:var(--green); border-color:var(--green); color:#090e1a; }
+
+.todo-text { font-size:12px; color:var(--text); flex:1; }
+
+.todo-del { font-size:10px; color:var(--muted2); cursor:pointer; opacity:0; transition:all 0.15s; }
+.todo-item:hover .todo-del { opacity:1; }
+.todo-del:hover { color:var(--red); }
+
+.todo-empty { font-size:11px; color:var(--muted2); text-align:center; padding:12px 0; font-style:italic; }
+
+.todo-footer { display:flex; justify-content:space-between; margin-top:10px; }
+
+/* ─── PROJECTS ─── */
+.pipeline { display:flex; flex-direction:column; gap:5px; }
+
+.pipeline-item {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 12px; background:rgba(255,255,255,0.025);
+  border:1px solid var(--border); border-radius:8px; transition:all 0.15s;
+}
+.pipeline-item:hover { background:rgba(255,255,255,0.05); border-color:var(--borderhi); transform:translateX(2px); }
+
+.p-dot { width:6px;height:6px;border-radius:50%;flex-shrink:0; }
+.p-name { font-size:12px; color:var(--text); flex:1; }
+.p-tag {
+  font-family:'Space Mono',monospace; font-size:9px; color:var(--muted2);
+  cursor:pointer; padding:2px 6px; border:1px solid transparent; border-radius:4px; transition:all 0.15s;
+}
+.p-tag:hover { border-color:var(--borderhi); color:var(--gold); }
+
+.p-del { font-size:10px;color:var(--muted2);cursor:pointer;opacity:0;transition:all 0.15s; }
+.pipeline-item:hover .p-del { opacity:1; }
+.p-del:hover { color:var(--red); }
+
+.add-btn {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px; border-radius:8px; border:1px dashed var(--border);
+  color:var(--muted2); font-size:11px; cursor:pointer; transition:all 0.15s;
+  background:transparent; width:100%; text-align:left; margin-top:8px;
+  font-family:'Space Mono',monospace; letter-spacing:0.05em;
+}
+.add-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ─── LINKS ─── */
+.link-item {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 10px; border-radius:8px; text-decoration:none;
+  color:var(--text); font-size:13px; transition:all 0.15s; margin-bottom:2px;
+}
+.link-item:hover { background:rgba(255,255,255,0.05); color:var(--gold); }
+
+.link-icon {
+  width:26px;height:26px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
+}
+.link-sub { font-size:10px;color:var(--muted2);margin-top:1px; }
+
+/* ─── STATUS PILLS ─── */
+.status-row { display:flex;gap:6px;flex-wrap:wrap;margin-top:4px; }
+.status-pill {
+  display:flex;align-items:center;gap:5px;
+  font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);
+  padding:4px 8px;border:1px solid var(--border);border-radius:20px;
+}
+.s-dot { width:5px;height:5px;border-radius:50%; }
+.dot-g { background:var(--green);box-shadow:0 0 6px var(--green); }
+.dot-a { background:var(--amber);box-shadow:0 0 6px var(--amber); }
+
+/* ─── BOTTOM BAR ─── */
+.bottombar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 28px; border-top:1px solid var(--border);
+}
+.bottom-left { display:flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted2); }
+.bottom-pulse { width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.bottom-right { font-family:'Space Mono',monospace;font-size:10px;color:var(--muted2); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(8px);
+}
+.modal-overlay.open { opacity:1;pointer-events:all; }
+
+.modal {
+  background:#111a2e;border:1px solid var(--borderhi);border-radius:16px;
+  padding:28px;width:360px;transform:translateY(14px);transition:transform 0.2s;
+  box-shadow:0 24px 64px rgba(0,0,0,0.6);
+}
+.modal-overlay.open .modal { transform:translateY(0); }
+
+.modal-title { font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--gold);margin-bottom:20px; }
+
+.modal label {
+  display:block;font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px;
+}
+
+.modal input, .modal select {
+  width:100%;background:var(--surface2);border:1px solid var(--borderhi);
+  border-radius:8px;padding:10px 14px;color:var(--text);
+  font-family:'Inter',sans-serif;font-size:13px;outline:none;margin-bottom:14px;
+  caret-color:var(--gold);transition:border-color 0.15s;
+}
+.modal input:focus,.modal select:focus { border-color:var(--gold); }
+.modal select option { background:#111a2e; }
+
+.modal-actions { display:flex;gap:10px; }
+
+.modal-save {
+  flex:1;background:var(--gold);color:#090e1a;border:none;border-radius:8px;
+  padding:11px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+  cursor:pointer;transition:opacity 0.15s;letter-spacing:0.05em;
+}
+.modal-save:hover { opacity:0.82; }
+
+.modal-cancel {
+  background:transparent;color:var(--muted);border:1px solid var(--border);
+  border-radius:8px;padding:11px 18px;font-family:'Space Mono',monospace;
+  font-size:11px;cursor:pointer;transition:all 0.15s;
+}
+.modal-cancel:hover { border-color:var(--borderhi);color:var(--text); }
+
+/* ─── FADE IN ─── */
+.fade { opacity:0;transform:translateY(8px);animation:fadeUp 0.45s ease forwards; }
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.d1{animation-delay:0.04s}.d2{animation-delay:0.1s}.d3{animation-delay:0.16s}
+.d4{animation-delay:0.22s}.d5{animation-delay:0.28s}.d6{animation-delay:0.34s}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--borderhi);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title">+ New Project</div>
+    <label>Project Name</label>
+    <input id="m-name" type="text" placeholder="e.g. Portfolio Site" maxlength="40"/>
+    <label>Status</label>
+    <select id="m-status">
+      <option value="IN PROGRESS">In Progress</option>
+      <option value="BACKLOG">Backlog</option>
+      <option value="DONE">Done</option>
+      <option value="PAUSED">Paused</option>
+    </select>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-save" onclick="saveProject()">Add Project</button>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- TOP NAV -->
+  <nav class="topnav fade d1">
+    <div class="nav-brand">The Starting Zone</div>
+    <div class="nav-center" id="nav-quote-mini"></div>
+    <div class="nav-right">
+      <div id="nav-clock"><span id="nh">--</span><span class="c-col">:</span><span id="nm">--</span><span id="nav-period"></span></div>
+      <div id="nav-date"></div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero fade d2">
+    <div class="hero-greeting">Welcome back</div>
+    <div class="hero-name">CC</div>
+    <div class="hero-tagline" id="tagline"></div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-bar">
+        <span class="search-duck">🦆</span>
+        <input id="search-input" type="text" placeholder="Search DuckDuckGo..." autocomplete="off"
+          onkeydown="if(event.key==='Enter') runSearch()" />
+        <button class="search-btn" onclick="runSearch()">Search</button>
+      </div>
+      <div class="search-shortcuts">
+        <a class="shortcut-chip" onclick="searchFor('YouTube')">YouTube</a>
+        <a class="shortcut-chip" onclick="searchFor('GitHub')">GitHub</a>
+        <a class="shortcut-chip" onclick="searchFor('Stack Overflow')">Stack Overflow</a>
+        <a class="shortcut-chip" onclick="searchFor('Reddit')">Reddit</a>
+        <a class="shortcut-chip" onclick="searchFor('MDN Web Docs')">MDN Docs</a>
+        <a class="shortcut-chip" onclick="searchFor('ChatGPT')">ChatGPT</a>
+      </div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="quote-ticker">
+      <div class="quote-text" id="q-text">Ideas don't ship themselves. <em>You do.</em></div>
+      <div class="quote-attr" id="q-attr">— THE STARTING ZONE</div>
+    </div>
+  </section>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- LEFT -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <!-- Weather -->
+      <div class="card fade d3">
+        <div class="card-header">
+          <div class="card-label">// Weather</div>
+          <button class="card-action" onclick="fetchWeather()">↻ refresh</button>
+        </div>
+        <div id="weather-content">
+          <div id="weather-loading">Locating...</div>
+        </div>
+      </div>
+
+      <!-- Focus -->
+      <div class="card fade d4" style="background:var(--surface2)">
+        <div class="card-label" style="margin-bottom:10px">// Today's focus</div>
+        <div class="focus-wrap">
+          <div class="focus-dot"></div>
+          <input id="focus-input" type="text" placeholder="What are you building today?" maxlength="80"/>
+        </div>
+      </div>
+
+      <!-- Build Streak -->
+      <div class="card fade d5">
+        <div class="card-header">
+          <div class="card-label">// Build streak</div>
+          <button class="card-action" onclick="clearStreak()">clear</button>
+        </div>
+        <div class="streak-row">
+          <div class="streak-day" data-day="1"><div class="streak-dot"></div><span class="s-label">M</span></div>
+          <div class="streak-day" data-day="2"><div class="streak-dot"></div><span class="s-label">T</span></div>
+          <div class="streak-day" data-day="3"><div class="streak-dot"></div><span class="s-label">W</span></div>
+          <div class="streak-day" data-day="4"><div class="streak-dot"></div><span class="s-label">T</span></div>
+          <div class="streak-day" data-day="5"><div class="streak-dot"></div><span class="s-label">F</span></div>
+          <div class="streak-day" data-day="6"><div class="streak-dot"></div><span class="s-label">S</span></div>
+          <div class="streak-day" data-day="0"><div class="streak-dot"></div><span class="s-label">S</span></div>
+        </div>
+        <div class="streak-count" id="streak-count">0 / 7 days</div>
+      </div>
+
+    </div>
+
+    <!-- CENTER -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <!-- To-Do List -->
+      <div class="card fade d3">
+        <div class="card-header">
+          <div class="card-label">// To-do list</div>
+          <button class="card-action" onclick="clearDone()">clear done</button>
+        </div>
+        <div class="todo-input-row">
+          <input id="todo-input" type="text" placeholder="Add a task..." maxlength="80"
+            onkeydown="if(event.key==='Enter') addTodo()"/>
+          <button class="todo-add-btn" onclick="addTodo()">+ Add</button>
+        </div>
+        <div class="todo-list" id="todo-list">
+          <div class="todo-empty" id="todo-empty">No tasks yet — add one above.</div>
+        </div>
+        <div class="todo-footer">
+          <span class="card-label" id="todo-count">0 tasks</span>
+        </div>
+      </div>
+
+      <!-- Active Projects -->
+      <div class="card fade d4">
+        <div class="card-label" style="margin-bottom:12px">// Active projects</div>
+        <div class="pipeline" id="pipeline"></div>
+        <button class="add-btn" onclick="openModal()">+ add project</button>
+      </div>
+
+      <!-- Notes -->
+      <div class="card fade d5">
+        <div class="card-header">
+          <div class="card-label">// Quick notes</div>
+          <button class="card-action" onclick="clearNotes()">clear</button>
+        </div>
+        <textarea id="notes-input" placeholder="Jot something down...&#10;Ideas, reminders, links — anything."></textarea>
+        <div class="notes-footer" id="notes-footer">0 chars</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <!-- AI Tools -->
+      <div class="card fade d3">
+        <div class="card-label" style="margin-bottom:10px">// AI tools</div>
+        <a class="link-item" href="https://chatgpt.com" target="_blank">
+          <div class="link-icon" style="background:rgba(16,163,127,0.15)">🤖</div>
+          <div><div>ChatGPT</div><div class="link-sub">Personal project →</div></div>
+        </a>
+        <a class="link-item" href="https://claude.ai" target="_blank">
+          <div class="link-icon" style="background:rgba(200,160,100,0.15)">⚡</div>
+          <div><div>Claude</div><div class="link-sub">Anthropic</div></div>
+        </a>
+        <a class="link-item" href="https://uxpilot.ai" target="_blank">
+          <div class="link-icon" style="background:rgba(99,102,241,0.18)">🎨</div>
+          <div><div>UX Pilot</div><div class="link-sub">AI design assistant</div></div>
+        </a>
+        <a class="link-item" href="https://wispr.ai" target="_blank">
+          <div class="link-icon" style="background:rgba(56,217,245,0.12)">🎙️</div>
+          <div><div>Wispr AI</div><div class="link-sub">Voice to text</div></div>
+        </a>
+      </div>
+
+      <!-- Finance -->
+      <div class="card fade d4">
+        <div class="card-label" style="margin-bottom:10px">// Finance</div>
+        <a class="link-item" href="https://bankofamerica.com" target="_blank">
+          <div class="link-icon" style="background:rgba(206,17,38,0.15)">🏦</div>
+          <div><div>Bank of America</div><div class="link-sub">Banking</div></div>
+        </a>
+        <a class="link-item" href="https://robinhood.com" target="_blank">
+          <div class="link-icon" style="background:rgba(0,200,120,0.15)">📈</div>
+          <div><div>Robinhood</div><div class="link-sub">Investing</div></div>
+        </a>
+        <a class="link-item" href="https://fidelity.com" target="_blank">
+          <div class="link-icon" style="background:rgba(0,90,180,0.2)">💼</div>
+          <div><div>Fidelity</div><div class="link-sub">Investments & retirement</div></div>
+        </a>
+      </div>
+
+      <!-- Environment -->
+      <div class="card fade d5">
+        <div class="card-label" style="margin-bottom:10px">// Environment</div>
+        <div class="status-row">
+          <div class="status-pill"><div class="s-dot dot-g"></div>Personal</div>
+          <div class="status-pill"><div class="s-dot dot-a"></div>Firefox</div>
+          <div class="status-pill"><div class="s-dot dot-g"></div>iCloud</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <footer class="bottombar">
+    <div class="bottom-left">
+      <div class="bottom-pulse"></div>
+      <span>Personal · Admin · Mac</span>
+    </div>
+    <div class="bottom-right">STARTING ZONE v3.0</div>
+  </footer>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CLOCK — instant, no lag
+// ══════════════════════════════════════════
+const DAYS   = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+function updateClock() {
+  const now = new Date();
+  let h = now.getHours();
+  const m  = now.getMinutes();
+  const per = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  document.getElementById('nh').textContent  = String(h).padStart(2,'0');
+  document.getElementById('nm').textContent  = String(m).padStart(2,'0');
+  document.getElementById('nav-period').textContent = per;
+  document.getElementById('nav-date').textContent   =
+    `${DAYS[now.getDay()]} · ${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ══════════════════════════════════════════
+// TAGLINE
+// ══════════════════════════════════════════
+const taglines = [
+  "Let's build something today.",
+  "What are you shipping?",
+  "One commit at a time.",
+  "Start before you're ready.",
+  "Make it work. Then make it great.",
+  "The best time to start was yesterday.",
+  "Every expert was once a beginner.",
+];
+document.getElementById('tagline').textContent =
+  taglines[Math.floor(Math.random() * taglines.length)];
+
+// ══════════════════════════════════════════
+// QUOTES
+// ══════════════════════════════════════════
+const quotes = [
+  { t:"Ideas don't ship themselves. <em>You do.</em>",                   a:"— THE STARTING ZONE" },
+  { t:"The best way to predict the future is to <em>build it.</em>",     a:"— Alan Kay" },
+  { t:"Shipping is a feature. A <em>damn good one.</em>",                a:"— Joel Spolsky" },
+  { t:"Move fast. Stay curious. <em>Build things that matter.</em>",     a:"— Builder's Creed" },
+  { t:"You don't need permission to <em>start.</em>",                    a:"— THE STARTING ZONE" },
+  { t:"Done is better than <em>perfect.</em>",                           a:"— Sheryl Sandberg" },
+  { t:"An idea not paired with action will <em>never get bigger.</em>",  a:"— Sparky Anderson" },
+  { t:"Code is how you <em>push the world forward.</em>",                a:"— Ryan Dahl" },
+];
+
+let qi = Math.floor(Math.random() * quotes.length);
+function setQuote(q) {
+  document.getElementById('q-text').innerHTML = q.t;
+  document.getElementById('q-attr').textContent = q.a;
+  // mini version in nav (plain text)
+  const plain = q.t.replace(/<[^>]+>/g,'');
+  document.getElementById('nav-quote-mini').textContent =
+    plain.length > 55 ? plain.slice(0,52)+'…' : plain;
+}
+setQuote(quotes[qi]);
+setInterval(() => {
+  qi = (qi + 1) % quotes.length;
+  const el = document.getElementById('q-text');
+  el.style.opacity = 0;
+  setTimeout(() => { setQuote(quotes[qi]); el.style.opacity = 1; }, 500);
+}, 10000);
+
+// ══════════════════════════════════════════
+// SEARCH — uses window.open to bypass moz-extension restriction
+// ══════════════════════════════════════════
+function runSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  window.open('https://duckduckgo.com/?q=' + encodeURIComponent(q), '_blank');
+  document.getElementById('search-input').value = '';
+}
+
+function searchFor(term) {
+  window.open('https://duckduckgo.com/?q=' + encodeURIComponent(term), '_blank');
+}
+
+// ══════════════════════════════════════════
+// WEATHER — Open-Meteo (no API key needed)
+// ══════════════════════════════════════════
+const WX_CODES = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
+  45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌦️',55:'🌧️',
+  61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'❄️',73:'❄️',75:'❄️',
+  80:'🌦️',81:'🌧️',82:'⛈️',
+  95:'⛈️',96:'⛈️',99:'⛈️',
+};
+const WX_DESC = {
+  0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy fog',
+  51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
+  61:'Light rain',63:'Rain',65:'Heavy rain',
+  71:'Light snow',73:'Snow',75:'Heavy snow',
+  80:'Rain showers',81:'Heavy showers',82:'Violent showers',
+  95:'Thunderstorm',96:'Thunderstorm w/ hail',99:'Thunderstorm',
+};
+
+function fetchWeather() {
+  const el = document.getElementById('weather-content');
+  el.innerHTML = '<div id="weather-loading">Locating...</div>';
+  if (!navigator.geolocation) {
+    el.innerHTML = '<div id="weather-loading">Geolocation not available.</div>'; return;
+  }
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const { latitude: lat, longitude: lon } = pos.coords;
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,windspeed_10m&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=auto`;
+      const res  = await fetch(url);
+      const data = await res.json();
+      const cw   = data.current_weather;
+      const code = cw.weathercode;
+      const icon = WX_CODES[code] || '🌡️';
+      const desc = WX_DESC[code]  || 'Unknown';
+      const temp = Math.round(cw.temperature);
+      const wind = Math.round(cw.windspeed);
+      const hi   = cw.is_day ? '🌅 Day' : '🌙 Night';
+
+      // get humidity from first hourly entry
+      const hum = data.hourly?.relativehumidity_2m?.[0] ?? '—';
+
+      el.innerHTML = `
+        <div class="weather-main">
+          <div class="weather-icon">${icon}</div>
+          <div><span class="weather-temp">${temp}</span><span class="weather-unit">°F</span></div>
+        </div>
+        <div class="weather-desc">${desc}</div>
+        <div class="weather-meta">
+          <div class="weather-pill">💨 ${wind} mph</div>
+          <div class="weather-pill">💧 ${hum}%</div>
+          <div class="weather-pill">${hi}</div>
+        </div>
+        <div class="weather-location">📍 ${lat.toFixed(2)}, ${lon.toFixed(2)}</div>
+      `;
+    } catch {
+      el.innerHTML = '<div id="weather-loading">Could not load weather.</div>';
+    }
+  }, () => {
+    el.innerHTML = '<div id="weather-loading">Location denied. Click ↻ to retry.</div>';
+  });
+}
+
+fetchWeather();
+
+// ══════════════════════════════════════════
+// INDEXEDDB STORAGE
+// ══════════════════════════════════════════
+let db;
+function openDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('cc_zone_v3', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('kv');
+    req.onsuccess = e => { db = e.target.result; res(); };
+    req.onerror   = () => rej();
+  });
+}
+function dbGet(k) {
+  return new Promise(res => {
+    try {
+      const req = db.transaction('kv','readonly').objectStore('kv').get(k);
+      req.onsuccess = () => res(req.result ?? null);
+      req.onerror   = () => res(null);
+    } catch { res(null); }
+  });
+}
+function dbSet(k, v) {
+  try { db.transaction('kv','readwrite').objectStore('kv').put(v, k); }
+  catch(e) { console.warn('dbSet', e); }
+}
+
+// ══════════════════════════════════════════
+// FOCUS
+// ══════════════════════════════════════════
+async function initFocus() {
+  const el = document.getElementById('focus-input');
+  const v  = await dbGet('focus');
+  if (v) el.value = v;
+  el.addEventListener('input', () => dbSet('focus', el.value));
+}
+
+// ══════════════════════════════════════════
+// STREAK
+// ══════════════════════════════════════════
+async function initStreak() {
+  const saved = (await dbGet('streak')) || [];
+  renderStreak(saved);
+  document.querySelectorAll('.streak-day').forEach(day => {
+    day.addEventListener('click', async () => {
+      const cur = (await dbGet('streak')) || [];
+      const d   = day.dataset.day;
+      const upd = cur.includes(d) ? cur.filter(x=>x!==d) : [...cur, d];
+      dbSet('streak', upd);
+      renderStreak(upd);
+    });
+  });
+}
+
+function renderStreak(active) {
+  document.querySelectorAll('.streak-day').forEach(d =>
+    d.classList.toggle('active', active.includes(d.dataset.day))
+  );
+  document.getElementById('streak-count').textContent = `${active.length} / 7 days`;
+}
+
+async function clearStreak() {
+  dbSet('streak', []);
+  renderStreak([]);
+}
+
+// ══════════════════════════════════════════
+// NOTES
+// ══════════════════════════════════════════
+async function initNotes() {
+  const el = document.getElementById('notes-input');
+  const v  = await dbGet('notes');
+  if (v) el.value = v;
+  updateNotesFooter(el.value);
+  el.addEventListener('input', () => {
+    dbSet('notes', el.value);
+    updateNotesFooter(el.value);
+  });
+}
+
+function updateNotesFooter(v) {
+  document.getElementById('notes-footer').textContent = `${v.length} chars`;
+}
+
+async function clearNotes() {
+  document.getElementById('notes-input').value = '';
+  dbSet('notes', '');
+  updateNotesFooter('');
+}
+
+// ══════════════════════════════════════════
+// TO-DO LIST
+// ══════════════════════════════════════════
+async function initTodos() {
+  const todos = (await dbGet('todos')) || [];
+  renderTodos(todos);
+}
+
+async function addTodo() {
+  const inp  = document.getElementById('todo-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  const todos = (await dbGet('todos')) || [];
+  todos.push({ id: Date.now(), text, done: false });
+  dbSet('todos', todos);
+  renderTodos(todos);
+  inp.value = '';
+}
+
+async function toggleTodo(id) {
+  const todos = (await dbGet('todos')) || [];
+  const upd   = todos.map(t => t.id === id ? {...t, done: !t.done} : t);
+  dbSet('todos', upd);
+  renderTodos(upd);
+}
+
+async function deleteTodo(id) {
+  const todos = (await dbGet('todos')) || [];
+  const upd   = todos.filter(t => t.id !== id);
+  dbSet('todos', upd);
+  renderTodos(upd);
+}
+
+async function clearDone() {
+  const todos = (await dbGet('todos')) || [];
+  const upd   = todos.filter(t => !t.done);
+  dbSet('todos', upd);
+  renderTodos(upd);
+}
+
+function renderTodos(todos) {
+  const list  = document.getElementById('todo-list');
+  const empty = document.getElementById('todo-empty');
+  const count = document.getElementById('todo-count');
+
+  list.querySelectorAll('.todo-item').forEach(el => el.remove());
+
+  if (todos.length === 0) {
+    empty.style.display = 'block';
+    count.textContent = '0 tasks';
+    return;
+  }
+  empty.style.display = 'none';
+  count.textContent = `${todos.filter(t=>!t.done).length} remaining`;
+
+  todos.forEach(todo => {
+    const item = document.createElement('div');
+    item.className = 'todo-item' + (todo.done ? ' done' : '');
+    item.innerHTML = `
+      <div class="todo-check" onclick="toggleTodo(${todo.id})">${todo.done ? '✓' : ''}</div>
+      <div class="todo-text">${escHtml(todo.text)}</div>
+      <div class="todo-del" onclick="deleteTodo(${todo.id})">✕</div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+// ══════════════════════════════════════════
+// PROJECTS
+// ══════════════════════════════════════════
+const PC = {
+  'IN PROGRESS': { c:'var(--green)',  s:'rgba(61,255,160,0.5)' },
+  'BACKLOG':     { c:'var(--muted2)', s:'transparent' },
+  'DONE':        { c:'var(--cyan)',   s:'rgba(56,217,245,0.5)' },
+  'PAUSED':      { c:'var(--amber)',  s:'rgba(255,158,44,0.5)' },
+};
+
+async function renderProjects() {
+  let all = await dbGet('projects');
+  if (!all) {
+    all = [
+      { id:1, name:'Project OS', status:'IN PROGRESS' },
+      { id:2, name:'HyStats',    status:'IN PROGRESS' },
+    ];
+    dbSet('projects', all);
+  }
+  const pipeline = document.getElementById('pipeline');
+  pipeline.innerHTML = '';
+  if (!all.length) {
+    pipeline.innerHTML = `<div style="font-size:11px;color:var(--muted2);padding:6px 0;font-style:italic">No projects yet.</div>`;
+    return;
+  }
+  all.forEach(proj => {
+    const c = PC[proj.status] || PC['BACKLOG'];
+    const el = document.createElement('div');
+    el.className = 'pipeline-item';
+    el.innerHTML = `
+      <div class="p-dot" style="background:${c.c};box-shadow:0 0 7px ${c.s}"></div>
+      <div class="p-name">${escHtml(proj.name)}</div>
+      <div class="p-tag" title="Click to cycle status">${proj.status}</div>
+      <div class="p-del" title="Delete">✕</div>
+    `;
+    el.querySelector('.p-tag').addEventListener('click', async e => {
+      e.stopPropagation();
+      const cycle = ['IN PROGRESS','BACKLOG','DONE','PAUSED'];
+      proj.status = cycle[(cycle.indexOf(proj.status)+1) % cycle.length];
+      const updated = ((await dbGet('projects'))||[]).map(p=>p.id===proj.id?proj:p);
+      dbSet('projects', updated);
+      renderProjects();
+    });
+    el.querySelector('.p-del').addEventListener('click', async e => {
+      e.stopPropagation();
+      const updated = ((await dbGet('projects'))||[]).filter(p=>p.id!==proj.id);
+      dbSet('projects', updated);
+      renderProjects();
+    });
+    pipeline.appendChild(el);
+  });
+}
+
+function openModal() {
+  document.getElementById('m-name').value   = '';
+  document.getElementById('m-status').value = 'IN PROGRESS';
+  document.getElementById('modal').classList.add('open');
+  setTimeout(()=>document.getElementById('m-name').focus(), 100);
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+async function saveProject() {
+  const name = document.getElementById('m-name').value.trim();
+  if (!name) { document.getElementById('m-name').focus(); return; }
+  const status = document.getElementById('m-status').value;
+  const all = (await dbGet('projects')) || [];
+  all.push({ id: Date.now(), name, status });
+  dbSet('projects', all);
+  renderProjects();
+  closeModal();
+}
+
+document.getElementById('modal').addEventListener('click', e => { if(e.target===document.getElementById('modal')) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') closeModal();
+  if (e.key==='Enter' && document.getElementById('modal').classList.contains('open')) saveProject();
+});
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+openDB().then(() => {
+  initFocus();
+  initStreak();
+  initNotes();
+  initTodos();
+  renderProjects();
+}).catch(() => {
+  // graceful fallback — UI still works, data won't persist
+  initStreak();
+  renderProjects();
+  initTodos();
+});
+</script>
+</body>
+</html>
