@@ -40,11 +40,37 @@ body.focus-mode #focus-overlay{display:flex;}
 .fo-exit:hover{color:var(--gold);border-color:var(--gold);}
 
 /* ── TICKER BAR ── */
-#ticker-bar{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--border);padding:0 36px;background:rgba(0,0,0,.3);overflow:hidden;}
-.ticker-item{display:flex;align-items:center;gap:8px;padding:7px 18px 7px 0;margin-right:18px;border-right:1px solid var(--border);}
-.ticker-item:last-child{border-right:none;}
+/* ── SCROLLING TICKER MARQUEE ── */
+#ticker-bar{
+  border-bottom:1px solid var(--border);
+  background:rgba(0,0,0,.4);
+  overflow:hidden;
+  white-space:nowrap;
+  padding:0;
+  height:32px;
+  display:flex;
+  align-items:center;
+  position:relative;
+}
+#ticker-bar::before,#ticker-bar::after{
+  content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none;
+}
+#ticker-bar::before{left:0;background:linear-gradient(to right,rgba(0,0,0,.7),transparent);}
+#ticker-bar::after{right:0;background:linear-gradient(to left,rgba(0,0,0,.7),transparent);}
+.ticker-track{
+  display:inline-flex;align-items:center;
+  animation:marquee 60s linear infinite;
+  will-change:transform;
+}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:0 20px;border-right:1px solid var(--border);
+  height:32px;flex-shrink:0;cursor:default;
+}
 .ticker-name{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
-.ticker-price{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text);}
+.ticker-price{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--text);}
 .ticker-change{font-family:'DM Mono',monospace;font-size:9px;}
 .ticker-change.up{color:var(--green);}
 .ticker-change.dn{color:var(--red);}
@@ -53,8 +79,7 @@ body.focus-mode #focus-overlay{display:flex;}
 .ticker-dot.up{background:var(--green);box-shadow:0 0 5px var(--green);}
 .ticker-dot.dn{background:var(--red);box-shadow:0 0 5px var(--red);}
 .ticker-dot.flat{background:var(--muted);}
-#ticker-updated{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted2);margin-left:auto;}
-.ticker-loading{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);font-style:italic;padding:8px 0;}
+.ticker-loading{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);font-style:italic;padding:0 20px;}
 
 /* ── SPRINT BANNER ── */
 #sprint-bar{display:flex;align-items:center;gap:12px;padding:9px 36px;border-bottom:1px solid var(--border);background:rgba(200,169,110,.04);}
@@ -316,6 +341,14 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:11p
 #sprint-modal-save{background:var(--gold);color:#0a0a0a;border:none;border-radius:2px;padding:10px 20px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;width:100%;}
 #sprint-modal-save:hover{opacity:.8;}
 
+/* ── TRAINING GROUND CARDS ── */
+.tg-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.tg-card{display:flex;flex-direction:column;gap:3px;padding:10px 10px 9px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;text-decoration:none;color:var(--text);transition:all .15s;}
+.tg-card:hover{border-color:var(--gold);background:rgba(200,169,110,.05);transform:translateY(-1px);}
+.tg-card-icon{font-size:15px;line-height:1;margin-bottom:2px;}
+.tg-card-name{font-size:11px;font-weight:400;color:var(--text);line-height:1.2;}
+.tg-card-sub{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted2);letter-spacing:.04em;}
+
 .fade{opacity:0;transform:translateY(5px);animation:fu .4s ease forwards;}
 @keyframes fu{to{opacity:1;transform:translateY(0)}}
 .d1{animation-delay:.04s}.d2{animation-delay:.09s}.d3{animation-delay:.14s}
@@ -535,11 +568,11 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:11p
         <div class="sec-body closed" style="max-height:0">
           <a class="lnk" href="https://chatgpt.com" target="_blank" data-track="ChatGPT"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">ChatGPT</div><div class="lnk-sub">OpenAI · conversational AI</div></div><span class="lnk-shortcut">C</span><span class="larr">↗</span></a>
           <a class="lnk" href="https://claude.ai" target="_blank" data-track="Claude"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Claude</div><div class="lnk-sub">Anthropic · reasoning & writing</div></div><span class="lnk-shortcut">A</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://perplexity.ai" target="_blank" data-track="Perplexity"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Perplexity</div><div class="lnk-sub">AI-powered search engine</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://notebooklm.google.com" target="_blank" data-track="NotebookLM"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=notebooklm.google.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">NotebookLM</div><div class="lnk-sub">Google · research & notes AI</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://manus.im" target="_blank" data-track="Manus"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=manus.im" alt=""/></div><div class="lnk-info"><div class="lnk-name">Manus</div><div class="lnk-sub">Autonomous AI agent</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://uxpilot.ai" target="_blank" data-track="UX Pilot"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=uxpilot.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">UX Pilot</div><div class="lnk-sub">AI UI design</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://wispr.ai" target="_blank" data-track="Wispr AI"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=wispr.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Wispr AI</div><div class="lnk-sub">Voice to text</div></div><span class="larr">↗</span></a>
+          <a class="lnk" href="https://perplexity.ai" target="_blank" data-track="Perplexity"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Perplexity</div><div class="lnk-sub">AI-powered search engine</div></div><span class="lnk-shortcut">P</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://notebooklm.google.com" target="_blank" data-track="NotebookLM"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=notebooklm.google.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">NotebookLM</div><div class="lnk-sub">Google · research & notes AI</div></div><span class="lnk-shortcut">N</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://manus.im" target="_blank" data-track="Manus"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=manus.im" alt=""/></div><div class="lnk-info"><div class="lnk-name">Manus</div><div class="lnk-sub">Autonomous AI agent</div></div><span class="lnk-shortcut">M</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://uxpilot.ai" target="_blank" data-track="UX Pilot"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=uxpilot.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">UX Pilot</div><div class="lnk-sub">AI UI design</div></div><span class="lnk-shortcut">U</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://wispr.ai" target="_blank" data-track="Wispr AI"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=wispr.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Wispr AI</div><div class="lnk-sub">Voice to text</div></div><span class="lnk-shortcut">W</span><span class="larr">↗</span></a>
         </div>
       </div>
       <div class="section">
@@ -547,10 +580,10 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:11p
           <div class="sec-label">AI Builders</div><button class="sec-btn">+</button>
         </div>
         <div class="sec-body closed" style="max-height:0">
-          <a class="lnk" href="https://capybaraide.com" target="_blank" data-track="Cappy IDE"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=capybaraide.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Cappy IDE</div><div class="lnk-sub">AI coding environment</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://v0.dev" target="_blank" data-track="v0.dev"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=v0.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">v0.dev</div><div class="lnk-sub">Vercel · instant UI from prompt</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://bolt.new" target="_blank" data-track="Bolt.new"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=bolt.new" alt=""/></div><div class="lnk-info"><div class="lnk-name">Bolt.new</div><div class="lnk-sub">Full-stack app builder</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://lovable.dev" target="_blank" data-track="Lovable"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=lovable.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">Lovable</div><div class="lnk-sub">Product-focused app builder</div></div><span class="larr">↗</span></a>
+          <a class="lnk" href="https://capybaraide.com" target="_blank" data-track="Cappy IDE"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=capybaraide.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Cappy IDE</div><div class="lnk-sub">AI coding environment</div></div><span class="lnk-shortcut">K</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://v0.dev" target="_blank" data-track="v0.dev"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=v0.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">v0.dev</div><div class="lnk-sub">Vercel · instant UI from prompt</div></div><span class="lnk-shortcut">V</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://bolt.new" target="_blank" data-track="Bolt.new"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=bolt.new" alt=""/></div><div class="lnk-info"><div class="lnk-name">Bolt.new</div><div class="lnk-sub">Full-stack app builder</div></div><span class="lnk-shortcut">B</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://lovable.dev" target="_blank" data-track="Lovable"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=lovable.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">Lovable</div><div class="lnk-sub">Product-focused app builder</div></div><span class="lnk-shortcut">L</span><span class="larr">↗</span></a>
         </div>
       </div>
       <div class="section">
@@ -584,8 +617,63 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:11p
         <div class="sec-head" onclick="toggleSec(this)">
           <div class="sec-label">Dev Tools</div><button class="sec-btn">+</button>
         </div>
+      <div class="section">
+        <div class="sec-head" onclick="toggleSec(this)">
+          <div class="sec-label">Training Ground</div><button class="sec-btn">+</button>
+        </div>
         <div class="sec-body closed" style="max-height:0">
-          <a class="lnk" href="https://drive.google.com" target="_blank" data-track="Google Drive"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=drive.google.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Google Drive</div><div class="lnk-sub">Files & school docs</div></div><span class="larr">↗</span></a>
+          <div class="tg-grid">
+            <a class="tg-card" href="https://www.chess.com" target="_blank" data-track="Chess.com">
+              <div class="tg-card-icon">♟️</div>
+              <div class="tg-card-name">Chess.com</div>
+              <div class="tg-card-sub">Play · Puzzles · Learn</div>
+            </a>
+            <a class="tg-card" href="https://www.nitrotype.com" target="_blank" data-track="Nitro Type">
+              <div class="tg-card-icon">🏎️</div>
+              <div class="tg-card-name">Nitro Type</div>
+              <div class="tg-card-sub">Typing racing game</div>
+            </a>
+            <a class="tg-card" href="https://www.speedcoder.net" target="_blank" data-track="SpeedCoder">
+              <div class="tg-card-icon">⌨️</div>
+              <div class="tg-card-name">SpeedCoder</div>
+              <div class="tg-card-sub">Code typing speed</div>
+            </a>
+            <a class="tg-card" href="https://thecodetyper.com" target="_blank" data-track="The Code Typer">
+              <div class="tg-card-icon">💻</div>
+              <div class="tg-card-name">The Code Typer</div>
+              <div class="tg-card-sub">Real code practice</div>
+            </a>
+            <a class="tg-card" href="https://www.codetyper.in" target="_blank" data-track="CodeTyper">
+              <div class="tg-card-icon">🖥️</div>
+              <div class="tg-card-name">CodeTyper</div>
+              <div class="tg-card-sub">Dev typing trainer</div>
+            </a>
+            <a class="tg-card" href="https://www.sporcle.com/games/g/world" target="_blank" data-track="Sporcle World">
+              <div class="tg-card-icon">🌍</div>
+              <div class="tg-card-name">Countries of the World</div>
+              <div class="tg-card-sub">Sporcle · Geography</div>
+            </a>
+            <a class="tg-card" href="https://www.sporcle.com/games/g/states" target="_blank" data-track="Sporcle States">
+              <div class="tg-card-icon">🗺️</div>
+              <div class="tg-card-name">US States Quiz</div>
+              <div class="tg-card-sub">Sporcle · Geography</div>
+            </a>
+            <a class="tg-card" href="https://www.sporcle.com/games/Matt/find_the_states" target="_blank" data-track="Find the States">
+              <div class="tg-card-icon">📍</div>
+              <div class="tg-card-name">Find the States</div>
+              <div class="tg-card-sub">Sporcle · Click map</div>
+            </a>
+            <a class="tg-card" href="https://www.sporcle.com/games/demarcus/backwards_alphabet" target="_blank" data-track="Backwards Alphabet">
+              <div class="tg-card-icon">🔤</div>
+              <div class="tg-card-name">Backwards Alphabet</div>
+              <div class="tg-card-sub">Sporcle · Memory</div>
+            </a>
+          </div>
+        </div>
+      </div>
+        <div class="sec-body closed" style="max-height:0">
+          <a class="lnk" href="https://mail.google.com" target="_blank" data-track="Gmail"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=mail.google.com" alt="" loading="lazy"/></div><div class="lnk-info"><div class="lnk-name">Gmail</div><div class="lnk-sub">Email</div></div><span class="lnk-shortcut">@</span><span class="larr">↗</span></a>
+          <a class="lnk" href="https://drive.google.com" target="_blank" data-track="Google Drive"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=drive.google.com" alt="" loading="lazy"/></div><div class="lnk-info"><div class="lnk-name">Google Drive</div><div class="lnk-sub">Files & school docs</div></div><span class="lnk-shortcut">D</span><span class="larr">↗</span></a>
           <a class="lnk" href="https://github.com" target="_blank" data-track="GitHub"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=github.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">GitHub</div><div class="lnk-sub">Repos & code</div></div><span class="lnk-shortcut">G</span><span class="larr">↗</span></a>
           <a class="lnk" href="https://cursor.sh" target="_blank" data-track="Cursor"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=cursor.sh" alt=""/></div><div class="lnk-info"><div class="lnk-name">Cursor</div><div class="lnk-sub">AI editor</div></div><span class="larr">↗</span></a>
           <a class="lnk" href="https://vercel.com" target="_blank" data-track="Vercel"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=vercel.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Vercel</div><div class="lnk-sub">Deploy & host</div></div><span class="larr">↗</span></a>
@@ -602,14 +690,16 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:11p
     <div class="ft-hint">
       <span><kbd>Space</kbd> command</span>
       <span><kbd>F</kbd> focus</span>
-      <span><kbd>G</kbd> GitHub</span>
-      <span><kbd>Y</kbd> YouTube</span>
       <span><kbd>C</kbd> ChatGPT</span>
+      <span><kbd>A</kbd> Claude</span>
       <span><kbd>P</kbd> Perplexity</span>
+      <span><kbd>N</kbd> NotebookLM</span>
+      <span><kbd>G</kbd> GitHub</span>
       <span><kbd>D</kbd> Drive</span>
-      <span><kbd>?</kbd> all shortcuts</span>
+      <span><kbd>@</kbd> Gmail</span>
+      <span><kbd>?</kbd> all</span>
     </div>
-    <div class="ft-r">Command Center v6.2</div>
+    <div class="ft-r">Command Center v6.4</div>
   </footer>
 
 </div>
@@ -617,18 +707,20 @@ footer{display:flex;align-items:center;justify-content:space-between;padding:11p
 <script>
 // ══ SITES REGISTRY ══
 const FAV=d=>`<img src="https://www.google.com/s2/favicons?sz=32&domain=${d}" alt="" loading="lazy"/>`;
+const KB_SPECIAL={'@':{name:'Gmail',url:'https://mail.google.com'}};
 const SITES=[
   {name:'ChatGPT',    url:'https://chatgpt.com',              icon:FAV('chatgpt.com'),              key:'C', cat:'AI Tools'},
   {name:'Claude',     url:'https://claude.ai',                 icon:FAV('claude.ai'),                 key:'A', cat:'AI Tools'},
   {name:'Perplexity', url:'https://perplexity.ai',             icon:FAV('perplexity.ai'),             key:'P', cat:'AI Tools'},
-  {name:'NotebookLM', url:'https://notebooklm.google.com',     icon:FAV('notebooklm.google.com'),     key:null,cat:'AI Tools'},
-  {name:'Manus',      url:'https://manus.im',                  icon:FAV('manus.im'),                  key:null,cat:'AI Tools'},
-  {name:'UX Pilot',   url:'https://uxpilot.ai',                icon:FAV('uxpilot.ai'),                key:null,cat:'AI Tools'},
-  {name:'Wispr AI',   url:'https://wispr.ai',                  icon:FAV('wispr.ai'),                  key:null,cat:'AI Tools'},
-  {name:'Cappy IDE',  url:'https://capybaraide.com',           icon:FAV('capybaraide.com'),           key:null,cat:'AI Builders'},
-  {name:'v0.dev',     url:'https://v0.dev',                    icon:FAV('v0.dev'),                    key:null,cat:'AI Builders'},
-  {name:'Bolt.new',   url:'https://bolt.new',                  icon:FAV('bolt.new'),                  key:null,cat:'AI Builders'},
-  {name:'Lovable',    url:'https://lovable.dev',               icon:FAV('lovable.dev'),               key:null,cat:'AI Builders'},
+  {name:'NotebookLM', url:'https://notebooklm.google.com',     icon:FAV('notebooklm.google.com'),     key:'N', cat:'AI Tools'},
+  {name:'Manus',      url:'https://manus.im',                  icon:FAV('manus.im'),                  key:'M', cat:'AI Tools'},
+  {name:'UX Pilot',   url:'https://uxpilot.ai',                icon:FAV('uxpilot.ai'),                key:'U', cat:'AI Tools'},
+  {name:'Wispr AI',   url:'https://wispr.ai',                  icon:FAV('wispr.ai'),                  key:'W', cat:'AI Tools'},
+  {name:'Cappy IDE',  url:'https://capybaraide.com',           icon:FAV('capybaraide.com'),           key:'K', cat:'AI Builders'},
+  {name:'v0.dev',     url:'https://v0.dev',                    icon:FAV('v0.dev'),                    key:'V', cat:'AI Builders'},
+  {name:'Bolt.new',   url:'https://bolt.new',                  icon:FAV('bolt.new'),                  key:'B', cat:'AI Builders'},
+  {name:'Lovable',    url:'https://lovable.dev',               icon:FAV('lovable.dev'),               key:'L', cat:'AI Builders'},
+  {name:'Gmail',      url:'https://mail.google.com',           icon:FAV('mail.google.com'),           key:'@', cat:'Dev Tools'},
   {name:'Google Drive',url:'https://drive.google.com',         icon:FAV('drive.google.com'),          key:'D', cat:'Dev Tools'},
   {name:'GitHub',     url:'https://github.com',                icon:FAV('github.com'),                key:'G', cat:'Dev Tools'},
   {name:'Cursor',     url:'https://cursor.sh',                 icon:FAV('cursor.sh'),                 key:null,cat:'Dev Tools'},
@@ -644,6 +736,15 @@ const SITES=[
   {name:'SoFi',       url:'https://sofi.com',                  icon:FAV('sofi.com'),                  key:null,cat:'Finance'},
   {name:'Robinhood',  url:'https://robinhood.com',             icon:FAV('robinhood.com'),             key:'R', cat:'Finance'},
   {name:'Fidelity',   url:'https://fidelity.com',              icon:FAV('fidelity.com'),              key:null,cat:'Finance'},
+  {name:'Chess.com',      url:'https://www.chess.com',                                       icon:FAV('chess.com'),        key:null,cat:'Training Ground'},
+  {name:'Nitro Type',     url:'https://www.nitrotype.com',                                    icon:FAV('nitrotype.com'),    key:null,cat:'Training Ground'},
+  {name:'SpeedCoder',     url:'https://www.speedcoder.net',                                   icon:FAV('speedcoder.net'),   key:null,cat:'Training Ground'},
+  {name:'The Code Typer', url:'https://thecodetyper.com',                                     icon:FAV('thecodetyper.com'), key:null,cat:'Training Ground'},
+  {name:'CodeTyper',      url:'https://www.codetyper.in',                                     icon:FAV('codetyper.in'),     key:null,cat:'Training Ground'},
+  {name:'Countries Quiz', url:'https://www.sporcle.com/games/g/world',                        icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
+  {name:'US States Quiz', url:'https://www.sporcle.com/games/g/states',                       icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
+  {name:'Find the States',url:'https://www.sporcle.com/games/Matt/find_the_states',           icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
+  {name:'Backwards Alphabet',url:'https://www.sporcle.com/games/demarcus/backwards_alphabet', icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
 ];
 
 const ROUTES=[
@@ -730,51 +831,57 @@ function applyMode(){
 applyMode();
 
 // ══ LIVE TICKERS ══
+// ══ SCROLLING TICKER MARQUEE ══
+const TICKER_SYMBOLS=[
+  'SPY','FXAIX','QQQ',
+  'NVDA','TSLA','PLTR','NKE','PFE','LHX','O','SOFI','LAND',
+  'BTC-USD','AVAX-USD','DOGE-USD','XRP-USD'
+];
+
 async function fetchTickers(){
   const bar=document.getElementById('ticker-bar');
   try{
-    const [spy,btc]=await Promise.all([
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/SPY?interval=1d&range=2d').then(r=>r.json()).catch(()=>null),
-      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true').then(r=>r.json()).catch(()=>null),
-    ]);
+    // Fetch all Yahoo Finance tickers in one batch call
+    const syms=TICKER_SYMBOLS.join(',');
+    const url=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${syms}&fields=symbol,regularMarketPrice,regularMarketChangePercent,regularMarketChange`;
+    const res=await fetch(url).then(r=>r.json()).catch(()=>null);
+    const quotes=res?.quoteResponse?.result||[];
 
+    if(!quotes.length){
+      bar.innerHTML='<div class="ticker-loading">Market data unavailable — markets may be closed</div>';
+      return;
+    }
+
+    // Build items
+    const items=quotes.map(q=>{
+      const sym=q.symbol.replace('-USD','');
+      const price=q.regularMarketPrice;
+      const chgPct=q.regularMarketChangePercent||0;
+      const fmt=price>=100?'$'+price.toFixed(2):'$'+price.toFixed(price>=1?2:4);
+      return buildTickerItem(sym,fmt,chgPct);
+    }).join('');
+
+    // Duplicate for seamless loop
+    const track=document.createElement('div');
+    track.className='ticker-track';
+    track.innerHTML=items+items; // duplicate = seamless scroll
     bar.innerHTML='';
+    bar.appendChild(track);
 
-    // SPY
-    if(spy?.chart?.result?.[0]){
-      const r=spy.chart.result[0];
-      const closes=r.indicators.quote[0].close;
-      const prev=closes[closes.length-2];
-      const curr=closes[closes.length-1]||prev;
-      const chg=((curr-prev)/prev)*100;
-      bar.appendChild(makeTicker('SPY','$'+curr.toFixed(2),chg));
-    }
+    // Adjust animation speed based on content width
+    const totalW=track.scrollWidth/2;
+    const speed=Math.max(40,totalW/8); // ~8px per second
+    track.style.animationDuration=speed+'s';
 
-    // BTC
-    if(btc?.bitcoin){
-      const price=btc.bitcoin.usd;
-      const chg=btc.bitcoin.usd_24h_change||0;
-      const fmt=price>=1000?'$'+Math.round(price).toLocaleString():'$'+price.toFixed(2);
-      bar.appendChild(makeTicker('BTC',fmt,chg));
-    }
-
-    const upd=document.createElement('div');
-    upd.id='ticker-updated';upd.style.cssText='font-family:DM Mono,monospace;font-size:8px;color:var(--muted2);margin-left:auto;';
-    upd.textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    bar.appendChild(upd);
-
-    if(!bar.children.length) bar.innerHTML='<div class="ticker-loading">Market data unavailable</div>';
-  }catch{
+  }catch(e){
     bar.innerHTML='<div class="ticker-loading">Market data unavailable</div>';
   }
 }
 
-function makeTicker(name,price,chgPct){
+function buildTickerItem(sym,price,chgPct){
   const cls=chgPct>0?'up':chgPct<0?'dn':'flat';
   const sign=chgPct>0?'+':'';
-  const el=document.createElement('div');el.className='ticker-item';
-  el.innerHTML=`<div class="ticker-dot ${cls}"></div><span class="ticker-name">${name}</span><span class="ticker-price">${price}</span><span class="ticker-change ${cls}">${sign}${chgPct.toFixed(2)}%</span>`;
-  return el;
+  return `<div class="ticker-item"><div class="ticker-dot ${cls}"></div><span class="ticker-name">${sym}</span><span class="ticker-price">${price}</span><span class="ticker-change ${cls}">${sign}${chgPct.toFixed(2)}%</span></div>`;
 }
 
 fetchTickers();setInterval(fetchTickers,60000);
@@ -1054,12 +1161,16 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){if(cmdOpen)closeCmd();if(focusOn)toggleFocus();document.getElementById('sprint-modal').classList.remove('open');return;}
   if(e.key==='f'&&!typing&&!cmdOpen){toggleFocus();return;}
   if(e.key==='?'&&!typing){showShortcutToast();return;}
-  if(!typing&&!cmdOpen&&e.key.length===1){const k=e.key.toUpperCase();if(KB[k]){const s=KB[k];goSite(s.url,s.name);flashToast(s.key+' → '+s.name,'');}}
+  if(!typing&&!cmdOpen){
+    // special single-char shortcuts not in SITES (@ for Gmail)
+    if(e.key==='@'){goSite('https://mail.google.com','Gmail');flashToast('@ → Gmail','');return;}
+    if(e.key.length===1){const k=e.key.toUpperCase();if(KB[k]){const s=KB[k];goSite(s.url,s.name);flashToast(s.key+' → '+s.name,'');}}
+  }
 });
 
 function showShortcutToast(){
   const lines=SITES.filter(s=>s.key).map(s=>`<span style="color:var(--gold);margin-right:6px">${s.key}</span>${s.name}`).join('<br>');
-  showToast('Keyboard Shortcuts',lines+'<br><span style="color:var(--gold);margin-right:6px">F</span>Focus mode<br><span style="color:var(--gold);margin-right:6px">Space</span>Command bar<br><span style="color:var(--gold);margin-right:6px">?</span>This list',5000);
+  showToast('Keyboard Shortcuts',lines+'<br><span style="color:var(--gold);margin-right:6px">@</span>Gmail<br><span style="color:var(--gold);margin-right:6px">F</span>Focus mode<br><span style="color:var(--gold);margin-right:6px">Space</span>Command bar<br><span style="color:var(--gold);margin-right:6px">?</span>This list',6000);
 }
 function flashToast(title,body){showToast(title,body,1800);}
 function showToast(title,body,dur){
