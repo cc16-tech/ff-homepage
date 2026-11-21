@@ -799,7 +799,7 @@ body.theme-news nav{border-bottom:none;}
 .win-x:hover,.win-x:focus-visible{background:var(--ink);color:var(--win);outline:none;}
 .win-title{font-family:var(--f-display);font-size:21px;color:var(--text);letter-spacing:.01em;}
 body.theme-terminal .win-title{font-family:var(--f-mono);font-size:12px;letter-spacing:var(--track);text-transform:uppercase;}
-.win-body{padding:14px 16px 16px;overflow:auto;}
+.win-body{padding:14px 16px 16px;overflow:auto;min-height:0;}
 .win-sub,.win-grp{font-family:var(--f-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px;}
 .win-grp:first-child{margin-top:0;}
 .win .search-wrap{max-width:none;width:100%;}
@@ -850,9 +850,26 @@ body.theme-paper.tone-night .nav-brand,body.theme-news.tone-night .nav-brand{col
   padding:5px 9px;border-radius:5px;pointer-events:none;opacity:0;transition:opacity .12s;}
 #tone-pick .tp:hover::after,#tone-pick .tp:focus-visible::after{opacity:1;}
 /* the desk is its own stacking layer, so raised windows never cover the nav, toasts or overlays */
-#desk{z-index:1;isolation:isolate;}
+#desk{z-index:2;isolation:isolate;}
 nav{position:relative;z-index:4;}
 @media (prefers-reduced-motion:reduce){#tone-pick .tp{transition:none}}
+
+
+/* ── Sites editor ── */
+.sites-note{font-family:var(--f-body);font-size:12px;line-height:1.5;color:var(--muted);margin:0 0 10px;}
+.sites-bar{display:flex;gap:8px;margin-top:10px;}
+.sites-btn{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text);background:transparent;
+  border:1px solid var(--bhi);padding:7px 12px;min-height:32px;cursor:pointer;}
+.sites-btn:hover{border-color:var(--gold);color:var(--gold);}
+.sites-add{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--bhi);}
+.sites-add label{display:flex;flex-direction:column;gap:4px;font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.sites-add input{font-family:var(--f-body);font-size:13px;color:var(--text);background:var(--bg2);border:1px solid var(--border);padding:7px 8px;min-width:0;}
+.sites-add input:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+.sites-add button{grid-column:1 / -1;}
+.lnk{position:relative;}
+.lnk-del{margin-left:auto;width:28px;height:28px;border:1px solid var(--bhi);background:var(--win);color:var(--red);cursor:pointer;font-size:15px;flex:none;}
+.lnk-del:hover{background:var(--red);color:var(--win);}
+.td-set{font-family:var(--f-mono);font-size:11px;color:var(--gold);background:transparent;border:0;border-bottom:1px dashed var(--gold);padding:0;cursor:pointer;}
 
 /* ══ GAMES ══ */
 #games{position:relative;z-index:1;min-height:100vh;box-sizing:border-box;padding:44px 48px 28px;display:flex;flex-direction:column;
@@ -1207,7 +1224,7 @@ nav{position:relative;z-index:4;}
       </div>
       <div class="td-card">
         <div class="td-row"><span class="td-k">Market</span><span class="td-v" id="td-market">—</span></div>
-        <div class="td-row"><span class="td-k" id="td-ms-k">Graduation</span><span class="td-v" id="td-milestone">—</span></div>
+        <div class="td-row"><span class="td-k" id="td-ms-k">Countdown</span><span class="td-v" id="td-milestone">—</span></div>
         <div class="td-row"><span class="td-k">Build</span><span class="td-v accent" id="td-streak">—</span></div>
         <div class="td-row" id="td-next-row" style="display:none"><span class="td-k">Next</span><span class="td-v" id="td-next">—</span></div>
       </div>
@@ -1275,39 +1292,20 @@ nav{position:relative;z-index:4;}
   <section class="win" data-win="sites" aria-label="Sites" style="width:340px" hidden>
     <div class="win-bar"><button class="win-x" type="button" aria-label="Close Sites" onclick="toggleWin('sites',false)">×</button><span class="win-title">Sites</span></div>
     <div class="win-body scroll">
-      <div class="win-grp">AI</div>
-          <a class="lnk" href="https://chatgpt.com" target="_blank" data-track="ChatGPT"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=chatgpt.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">ChatGPT</div><div class="lnk-sub">OpenAI · conversational AI</div></div><span class="lnk-shortcut">C</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://claude.ai" target="_blank" data-track="Claude"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=claude.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Claude</div><div class="lnk-sub">Anthropic · reasoning & writing</div></div><span class="lnk-shortcut">A</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://gemini.google.com" target="_blank" data-track="Gemini"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=gemini.google.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Gemini</div><div class="lnk-sub">Google · multimodal AI</div></div><span class="lnk-shortcut">E</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://perplexity.ai" target="_blank" data-track="Perplexity"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=perplexity.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Perplexity</div><div class="lnk-sub">AI-powered search engine</div></div><span class="lnk-shortcut">P</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://notebooklm.google.com" target="_blank" data-track="NotebookLM"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=notebooklm.google.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">NotebookLM</div><div class="lnk-sub">Google · research & notes AI</div></div><span class="lnk-shortcut">N</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://manus.im" target="_blank" data-track="Manus"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=manus.im" alt=""/></div><div class="lnk-info"><div class="lnk-name">Manus</div><div class="lnk-sub">Autonomous AI agent</div></div><span class="lnk-shortcut">M</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://uxpilot.ai" target="_blank" data-track="UX Pilot"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=uxpilot.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">UX Pilot</div><div class="lnk-sub">AI UI design</div></div><span class="lnk-shortcut">U</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://wispr.ai" target="_blank" data-track="Wispr AI"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=wispr.ai" alt=""/></div><div class="lnk-info"><div class="lnk-name">Wispr AI</div><div class="lnk-sub">Voice to text</div></div><span class="lnk-shortcut">W</span><span class="larr">↗</span></a>
-      <div class="win-grp">Builders</div>
-          <a class="lnk" href="https://capybaraide.com" target="_blank" data-track="Cappy IDE"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=capybaraide.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Cappy IDE</div><div class="lnk-sub">AI coding environment</div></div><span class="lnk-shortcut">K</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://v0.dev" target="_blank" data-track="v0.dev"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=v0.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">v0.dev</div><div class="lnk-sub">Vercel · instant UI from prompt</div></div><span class="lnk-shortcut">V</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://bolt.new" target="_blank" data-track="Bolt.new"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=bolt.new" alt=""/></div><div class="lnk-info"><div class="lnk-name">Bolt.new</div><div class="lnk-sub">Full-stack app builder</div></div><span class="lnk-shortcut">B</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://lovable.dev" target="_blank" data-track="Lovable"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=lovable.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">Lovable</div><div class="lnk-sub">Product-focused app builder</div></div><span class="lnk-shortcut">L</span><span class="larr">↗</span></a>
-      <div class="win-grp">Finance</div>
-          <a class="lnk" href="https://bankofamerica.com" target="_blank" data-track="Bank of America"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=bankofamerica.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Bank of America</div><div class="lnk-sub">Banking</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://sofi.com" target="_blank" data-track="SoFi"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=sofi.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">SoFi</div><div class="lnk-sub">Banking & investing</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://robinhood.com" target="_blank" data-track="Robinhood"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=robinhood.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Robinhood</div><div class="lnk-sub">Investing</div></div><span class="lnk-shortcut">R</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://fidelity.com" target="_blank" data-track="Fidelity"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=fidelity.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Fidelity</div><div class="lnk-sub">Investments</div></div><span class="larr">↗</span></a>
-      <div class="win-grp">Social</div>
-          <a class="lnk" href="https://youtube.com" target="_blank" data-track="YouTube"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=youtube.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">YouTube</div><div class="lnk-sub">Most visited</div></div><span class="lnk-shortcut">Y</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://netflix.com" target="_blank" data-track="Netflix"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=netflix.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Netflix</div><div class="lnk-sub">Streaming</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://primevideo.com" target="_blank" data-track="Prime Video"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=primevideo.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Prime Video</div><div class="lnk-sub">Streaming</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://reddit.com" target="_blank" data-track="Reddit"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=reddit.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Reddit</div><div class="lnk-sub">Browse</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://twitter.com" target="_blank" data-track="Twitter"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=twitter.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Twitter / X</div><div class="lnk-sub">Feed</div></div><span class="larr">↗</span></a>
-      <div class="win-grp">Dev</div>
-          <a class="lnk" href="https://mail.google.com" target="_blank" data-track="Gmail"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=mail.google.com" alt="" loading="lazy"/></div><div class="lnk-info"><div class="lnk-name">Gmail</div><div class="lnk-sub">Email</div></div><span class="lnk-shortcut">@</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://drive.google.com" target="_blank" data-track="Google Drive"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=drive.google.com" alt="" loading="lazy"/></div><div class="lnk-info"><div class="lnk-name">Google Drive</div><div class="lnk-sub">Files & school docs</div></div><span class="lnk-shortcut">D</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://github.com" target="_blank" data-track="GitHub"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=github.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">GitHub</div><div class="lnk-sub">Repos & code</div></div><span class="lnk-shortcut">G</span><span class="larr">↗</span></a>
-          <a class="lnk" href="https://cursor.sh" target="_blank" data-track="Cursor"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=cursor.sh" alt=""/></div><div class="lnk-info"><div class="lnk-name">Cursor</div><div class="lnk-sub">AI editor</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://vercel.com" target="_blank" data-track="Vercel"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=vercel.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Vercel</div><div class="lnk-sub">Deploy & host</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://netlify.com" target="_blank" data-track="Netlify"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=netlify.com" alt=""/></div><div class="lnk-info"><div class="lnk-name">Netlify</div><div class="lnk-sub">Deploy & host</div></div><span class="larr">↗</span></a>
-          <a class="lnk" href="https://vscode.dev" target="_blank" data-track="VS Code"><div class="lnk-ico"><img src="https://www.google.com/s2/favicons?sz=32&domain=vscode.dev" alt=""/></div><div class="lnk-info"><div class="lnk-name">VS Code Web</div><div class="lnk-sub">Browser editor</div></div><span class="larr">↗</span></a>
+      <p id="sites-note" class="sites-note" hidden>These are starter links. Press <b>Edit</b> to make the list yours.</p>
+      <div id="sites-list"></div>
+      <form id="sites-add" class="sites-add" hidden onsubmit="addLinkFromForm(event)">
+        <label>Name<input id="sa-name" type="text" maxlength="28" required placeholder="Calendar"/></label>
+        <label>Address<input id="sa-url" type="text" required placeholder="calendar.google.com"/></label>
+        <label>Group<input id="sa-cat" type="text" maxlength="20" list="sa-cats" placeholder="Everyday"/></label>
+        <label>Key<input id="sa-key" type="text" maxlength="1" placeholder="K"/></label>
+        <datalist id="sa-cats"></datalist>
+        <button type="submit" class="tbtn">Add link</button>
+      </form>
+      <div class="sites-bar">
+        <button type="button" class="sites-btn" id="sites-edit-btn" onclick="toggleSitesEdit()">Edit</button>
+        <button type="button" class="sites-btn" id="sites-reset-btn" onclick="resetLinks()" hidden>Reset to starter</button>
+      </div>
     </div>
   </section>
   <section class="win" data-win="market" aria-label="Market" style="width:600px" hidden>
@@ -1411,41 +1409,30 @@ nav{position:relative;z-index:4;}
   <footer>
     <div id="nest-rail"></div>
     <div class="ft-l"><div class="ft-pulse"></div><span id="ft-mode-label">PERSONAL · ADMIN · MAC</span></div>
-    <div class="ft-hint">
-      <span><kbd>Space</kbd> command</span>
-      <span><kbd>F</kbd> focus</span>
-      <span><kbd>C</kbd> ChatGPT</span>
-      <span><kbd>A</kbd> Claude</span>
-      <span><kbd>P</kbd> Perplexity</span>
-      <span><kbd>N</kbd> NotebookLM</span>
-      <span><kbd>G</kbd> GitHub</span>
-      <span><kbd>D</kbd> Drive</span>
-      <span><kbd>@</kbd> Gmail</span>
-      <span><kbd>?</kbd> all</span>
-    </div>
-    <div class="ft-r"><button id="ft-version" onclick="openSettings()" title="Settings">Command Center v7.0</button></div>
+    <div class="ft-hint" id="ft-hint"></div>
+    <div class="ft-r"><button id="ft-version" onclick="openSettings()" title="Settings">Command Center v7.1</button></div>
   </footer>
 
 </div>
 
 <script>
 /* ══════════════════════════════════════════════════════════════
-   CONFIG — forking this page? Everything personal lives here.
-   The SITES array below the block is the other thing to change.
-   Anything you set in the Settings panel overrides these and is
-   stored in your browser, so you never have to edit code twice.
+   CONFIG — the public defaults. Nothing personal ships in this file:
+   each visitor's countdown, watchlist and links are set from the page
+   itself (Settings, the Sites window, or the command bar) and live only
+   in that visitor's browser.
    ══════════════════════════════════════════════════════════════ */
 const DEFAULTS={
   owner:'Personal',
-  masthead:'Reefine Labs',    // shown in the nav; blackletter in Newsprint
-  version:'Command Center v7.0',
-  milestone:{label:'Graduation',date:'2026-12-18'},
-  stocks:['SPY','FXAIX','NVDA','TSLA','PLTR','NKE','PFE','LHX','O','SOFI','LAND'],
-  crypto:{BTC:'bitcoin',AVAX:'avalanche-2',DOGE:'dogecoin',XRP:'ripple'},
+  masthead:'Reefine',         // shown in the nav; blackletter in Newsprint
+  version:'Command Center v7.1',
+  milestone:{label:'',date:''},  // set with: countdown dec 18 Graduation
+  stocks:[],                     // set with: watch NVDA SPY
+  crypto:{},                     // set with: watch BTC ETH
   weekTarget:5,
   pomoWork:25, pomoBreak:5, chime:true,
   leaderKey:true,               // g then a letter; false restores bare letters
-  sprintHint:'e.g. Ship v7 and finish the coursework',
+  sprintHint:'e.g. Finish the project and clear the inbox',
   logHint:'What did you actually move forward?',
 };
 let CFG={...DEFAULTS};
@@ -1455,6 +1442,8 @@ async function loadConfig(){
   if(saved&&typeof saved==='object') CFG={...DEFAULTS,...saved};
   // an old built-in label is not a choice you made: show the current version
   if(/^Command Center v[\d.]+$/.test(CFG.version||'')) CFG.version=DEFAULTS.version;
+  if(['Reefine Labs','The Daily Build'].includes(CFG.masthead)) CFG.masthead=DEFAULTS.masthead;
+  if(!CFG.milestone||typeof CFG.milestone!=='object') CFG.milestone={label:'',date:''};
   applyConfig();
 }
 function saveConfig(){ dbS('config',CFG); applyConfig(); }
@@ -1473,36 +1462,21 @@ function applyConfig(){
 
 // ══ SITES REGISTRY ══
 const FAV=d=>`<img src="https://www.google.com/s2/favicons?sz=32&domain=${d}" alt="" loading="lazy"/>`;
-const KB_SPECIAL={'@':{name:'Gmail',url:'https://mail.google.com'}};
-const SITES=[
-  {name:'ChatGPT',    url:'https://chatgpt.com',              icon:FAV('chatgpt.com'),              key:'C', cat:'AI Tools'},
-  {name:'Claude',     url:'https://claude.ai',                 icon:FAV('claude.ai'),                 key:'A', cat:'AI Tools'},
-  {name:'Gemini',     url:'https://gemini.google.com',         icon:FAV('gemini.google.com'),         key:'E', cat:'AI Tools'},
-  {name:'Perplexity', url:'https://perplexity.ai',             icon:FAV('perplexity.ai'),             key:'P', cat:'AI Tools'},
-  {name:'NotebookLM', url:'https://notebooklm.google.com',     icon:FAV('notebooklm.google.com'),     key:'N', cat:'AI Tools'},
-  {name:'Manus',      url:'https://manus.im',                  icon:FAV('manus.im'),                  key:'M', cat:'AI Tools'},
-  {name:'UX Pilot',   url:'https://uxpilot.ai',                icon:FAV('uxpilot.ai'),                key:'U', cat:'AI Tools'},
-  {name:'Wispr AI',   url:'https://wispr.ai',                  icon:FAV('wispr.ai'),                  key:'W', cat:'AI Tools'},
-  {name:'Cappy IDE',  url:'https://capybaraide.com',           icon:FAV('capybaraide.com'),           key:'K', cat:'AI Builders'},
-  {name:'v0.dev',     url:'https://v0.dev',                    icon:FAV('v0.dev'),                    key:'V', cat:'AI Builders'},
-  {name:'Bolt.new',   url:'https://bolt.new',                  icon:FAV('bolt.new'),                  key:'B', cat:'AI Builders'},
-  {name:'Lovable',    url:'https://lovable.dev',               icon:FAV('lovable.dev'),               key:'L', cat:'AI Builders'},
-  {name:'Gmail',      url:'https://mail.google.com',           icon:FAV('mail.google.com'),           key:'@', cat:'Dev Tools'},
-  {name:'Google Drive',url:'https://drive.google.com',         icon:FAV('drive.google.com'),          key:'D', cat:'Dev Tools'},
-  {name:'GitHub',     url:'https://github.com',                icon:FAV('github.com'),                key:'G', cat:'Dev Tools'},
-  {name:'Cursor',     url:'https://cursor.sh',                 icon:FAV('cursor.sh'),                 key:null,cat:'Dev Tools'},
-  {name:'Vercel',     url:'https://vercel.com',                icon:FAV('vercel.com'),                key:null,cat:'Dev Tools'},
-  {name:'Netlify',    url:'https://netlify.com',               icon:FAV('netlify.com'),               key:null,cat:'Dev Tools'},
-  {name:'VS Code',    url:'https://vscode.dev',                icon:FAV('vscode.dev'),                key:null,cat:'Dev Tools'},
-  {name:'YouTube',    url:'https://youtube.com',               icon:FAV('youtube.com'),               key:'Y', cat:'Social'},
-  {name:'Netflix',    url:'https://netflix.com',               icon:FAV('netflix.com'),               key:null,cat:'Social'},
-  {name:'Prime Video',url:'https://primevideo.com',            icon:FAV('primevideo.com'),            key:null,cat:'Social'},
-  {name:'Reddit',     url:'https://reddit.com',                icon:FAV('reddit.com'),                key:null,cat:'Social'},
-  {name:'Twitter',    url:'https://twitter.com',               icon:FAV('twitter.com'),               key:null,cat:'Social'},
-  {name:'Bank of America',url:'https://bankofamerica.com',     icon:FAV('bankofamerica.com'),         key:null,cat:'Finance'},
-  {name:'SoFi',       url:'https://sofi.com',                  icon:FAV('sofi.com'),                  key:null,cat:'Finance'},
-  {name:'Robinhood',  url:'https://robinhood.com',             icon:FAV('robinhood.com'),             key:'R', cat:'Finance'},
-  {name:'Fidelity',   url:'https://fidelity.com',              icon:FAV('fidelity.com'),              key:null,cat:'Finance'},
+// Starter links for a first visit. They are generic on purpose: the Sites
+// window has an Edit button, and once you change anything your own list is
+// saved in this browser and these are never shown to you again.
+const STARTER_LINKS=[
+  {name:'ChatGPT',     url:'https://chatgpt.com',        key:'C', cat:'AI'},
+  {name:'Claude',      url:'https://claude.ai',          key:'A', cat:'AI'},
+  {name:'Gemini',      url:'https://gemini.google.com',  key:'E', cat:'AI'},
+  {name:'Perplexity',  url:'https://perplexity.ai',      key:'P', cat:'AI'},
+  {name:'Gmail',       url:'https://mail.google.com',    key:'@', cat:'Everyday'},
+  {name:'Google Drive',url:'https://drive.google.com',   key:'D', cat:'Everyday'},
+  {name:'YouTube',     url:'https://youtube.com',        key:'Y', cat:'Everyday'},
+  {name:'GitHub',      url:'https://github.com',         key:'G', cat:'Build'},
+];
+// The games screen is part of the page, so its links are always searchable.
+const GAME_SITES=[
   {name:'Chess.com',      url:'https://www.chess.com',                                       icon:FAV('chess.com'),        key:null,cat:'Training Ground'},
   {name:'Wordle',         url:'https://www.nytimes.com/games/wordle/index.html',             icon:FAV('nytimes.com'),      key:null,cat:'Training Ground'},
   {name:'Sporcle',        url:'https://www.sporcle.com',                                     icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
@@ -1516,7 +1490,14 @@ const SITES=[
   {name:'Find the States',url:'https://www.sporcle.com/games/Matt/find_the_states',           icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
   {name:'Backwards Alphabet',url:'https://www.sporcle.com/games/demarcus/backwards_alphabet', icon:FAV('sporcle.com'),      key:null,cat:'Training Ground'},
 ];
-
+let userLinks=STARTER_LINKS.map(l=>({...l})), linksCustom=false, sitesEditing=false;
+let SITES=[], KB={};
+function domainOf(u){try{return new URL(u).hostname.replace(/^www\./,'');}catch(_){return '';}}
+function rebuildSites(){
+  SITES=[...userLinks.map(l=>({...l,icon:FAV(domainOf(l.url))})),...GAME_SITES];
+  KB=SITES.filter(x=>x.key).reduce((acc,x)=>{acc[x.key.toUpperCase()]=x;return acc;},{});
+}
+rebuildSites();
 const ROUTES=[
   {prefix:'yt',  label:'YouTube',       url:'https://www.youtube.com/results?search_query=',    icon:FAV('youtube.com')},
   {prefix:'gh',  label:'GitHub',        url:'https://github.com/search?q=',                     icon:FAV('github.com')},
@@ -1527,7 +1508,6 @@ const ROUTES=[
   {prefix:'so',  label:'Stack Overflow',url:'https://stackoverflow.com/search?q=',              icon:FAV('stackoverflow.com')},
 ];
 
-const KB=SITES.filter(s=>s.key).reduce((a,s)=>{a[s.key.toUpperCase()]=s;return a;},{});
 
 // ══ CLOCK ══
 const DAYS=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
@@ -1694,6 +1674,7 @@ async function viaProxy(url){
 // v7/finance/quote now requires a cookie+crumb pair and returns 401.
 // v8/finance/spark is still open, batches symbols, and needs no key.
 async function fetchStocks(){
+  if(!CFG.stocks.length) return null;
   const url=`https://query1.finance.yahoo.com/v8/finance/spark?symbols=${CFG.stocks.join(',')}&range=1d&interval=1d`;
   const json=await viaProxy(url);
   if(!json) return null;
@@ -1711,6 +1692,7 @@ async function fetchStocks(){
 }
 
 async function fetchCrypto(){
+  if(!Object.keys(CFG.crypto).length) return null;
   try{
     const ids=Object.values(CFG.crypto).join(',');
     const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
@@ -1744,6 +1726,7 @@ async function fetchTickers(){
   if(liveStocks) dbS('ticker-stocks',liveStocks);
   else if(stocks) console.warn('[ticker] stock feed unreachable — showing cached prices');
   if(stocks) for(const [sym,d] of Object.entries(stocks)){
+    if(!CFG.stocks.includes(sym)) continue;
     items.push({sym,raw:d.price,price:fmtPrice(d.price),chg:d.chg,url:`https://finance.yahoo.com/quote/${sym}`,stale:!liveStocks});
   }
 
@@ -1751,12 +1734,18 @@ async function fetchTickers(){
   if(liveCrypto) dbS('ticker-crypto',liveCrypto);
   else if(crypto) console.warn('[ticker] crypto feed unreachable — showing cached prices');
   if(crypto) for(const [sym,d] of Object.entries(crypto)){
+    if(!CFG.crypto[sym]) continue;
     items.push({sym,raw:d.price,price:fmtPrice(d.price),chg:d.chg,url:`https://www.coingecko.com/en/coins/${d.id||CFG.crypto[sym]}`,stale:!liveCrypto});
   }
 
   if(!items.length){
-    bar.innerHTML='<div class="ticker-loading">No market data — make your own.'+
-      '<button class="ticker-play" onclick="openGame()">Play Candles</button></div>';
+    lastTickers=[];
+    const empty=!CFG.stocks.length&&!Object.keys(CFG.crypto).length;
+    bar.innerHTML=empty
+      ? '<div class="ticker-loading">Your watchlist is empty. Type <b>watch NVDA BTC</b> to add symbols.'+
+        '<button class="ticker-play" onclick="openCmdWith(\'watch \')">Add symbols</button></div>'
+      : '<div class="ticker-loading">No market data right now.'+
+        '<button class="ticker-play" onclick="openGame()">Play Candles</button></div>';
     return;
   }
   lastTickers=items;
@@ -2420,7 +2409,7 @@ function closeCollection(){document.getElementById('coll-ov').classList.remove('
 // ── export / import ──────────────────────────────────────────
 const EXPORT_KEYS=['todos','notes','projects','sprint','sprint-week','focus','focus-mode',
   'visits','recent','open-days','events','theme','ticker-view','sand','game-best',
-  'build-log','egg','eggs','unlocked','collection','streak','config','cmd-history','seen-intro','desk','tone','last-export','capsules','pomo','echo-seen','positions'];
+  'build-log','egg','eggs','unlocked','collection','streak','config','cmd-history','seen-intro','desk','tone','links','last-export','capsules','pomo','echo-seen','positions'];
 
 async function exportData(){
   const out={_format:'ff-homepage',_at:new Date().toISOString(),data:{}};
@@ -2486,11 +2475,10 @@ function applySettings(){
   }
   const wt=parseInt(val('cfg-week'),10);
   CFG={...CFG,
-    milestone:{label:val('cfg-ms-label')||DEFAULTS.milestone.label,
-               date:val('cfg-ms-date')||DEFAULTS.milestone.date},
+    milestone:{label:val('cfg-ms-label'),date:val('cfg-ms-date')},
     weekTarget:(wt>=1&&wt<=7)?wt:DEFAULTS.weekTarget,
-    stocks:stocks.length?stocks:DEFAULTS.stocks,
-    crypto:Object.keys(crypto).length?crypto:DEFAULTS.crypto,
+    stocks,
+    crypto,
     version:val('cfg-version')||DEFAULTS.version,
     masthead:val('cfg-masthead')||DEFAULTS.masthead,
     leaderKey:!/^(off|no|false|0)$/i.test(val('cfg-leader')),
@@ -3359,10 +3347,15 @@ async function renderToday(){
   mkEl.textContent=mk.text;
   mkEl.className='td-v '+(mk.live?'live':'shut');
 
-  const left=daysUntil(CFG.milestone.date);
-  document.getElementById('td-ms-k').textContent=CFG.milestone.label;
-  document.getElementById('td-milestone').textContent =
-    left>0 ? `${left} day${left===1?'':'s'}` : left===0 ? 'Today' : 'Passed';
+  const msK=document.getElementById('td-ms-k'), msV=document.getElementById('td-milestone');
+  if(CFG.milestone&&CFG.milestone.date){
+    const left=daysUntil(CFG.milestone.date);
+    msK.textContent=CFG.milestone.label||'Countdown';
+    msV.textContent=left>0 ? `${left} day${left===1?'':'s'}` : left===0 ? 'Today' : 'Passed';
+  } else {
+    msK.textContent='Countdown';
+    msV.innerHTML='<button class="td-set" onclick="openCmdWith(\'countdown \')">Set one</button>';
+  }
 
   await logOpenAndStreak();          // still recorded, no longer the headline
   const bs=streakState||computeStreak();
@@ -3568,7 +3561,14 @@ function placeWin(k){
   if(s.x==null||s.y==null) assignSpot(k);
   // keep it on the desk if the window or the screen has changed size
   const D=deskBox(), maxX=Math.max(0,(D.w-w.offsetWidth)/D.w*100), maxY=Math.max(0,D.h-40);
-  w.style.left=Math.min(s.x,maxX)+'%'; w.style.top=Math.min(s.y,maxY)+'px'; w.style.zIndex=s.z||1;
+  w.style.maxHeight='';
+  let top=Math.min(s.y,maxY);
+  // a window taller than the room below it slides up, then scrolls inside
+  if(!deskNarrow()){
+    if(top+w.offsetHeight>D.h-8) top=Math.max(0,D.h-8-w.offsetHeight);
+    w.style.maxHeight=Math.max(160,D.h-8-top)+'px';
+  }
+  w.style.left=Math.min(s.x,maxX)+'%'; w.style.top=top+'px'; w.style.zIndex=s.z||1;
 }
 async function initDesk(){
   const saved=(await dbG('desk'))||{};
@@ -3619,6 +3619,86 @@ function dragWin(e,k){
   const up=()=>{w.classList.remove('dragging');removeEventListener('pointermove',move);removeEventListener('pointerup',up);saveDesk();};
   addEventListener('pointermove',move); addEventListener('pointerup',up);
 }
+
+
+// ══ SITES WINDOW ══
+async function loadLinks(){
+  const saved=await dbG('links');
+  if(Array.isArray(saved)){userLinks=saved;linksCustom=true;}
+  rebuildSites(); renderSites(); renderFooterHints();
+}
+function saveLinks(){
+  linksCustom=true; dbS('links',userLinks);
+  rebuildSites(); renderSites(); renderFooterHints(); renderChips();
+}
+function renderSites(){
+  const list=document.getElementById('sites-list'); if(!list) return;
+  const groups=[];
+  userLinks.forEach((l,i)=>{let g=groups.find(x=>x.cat===(l.cat||'Links'));if(!g){g={cat:l.cat||'Links',items:[]};groups.push(g);}g.items.push([l,i]);});
+  list.innerHTML=groups.map(g=>`<div class="win-grp">${esc(g.cat)}</div>`+g.items.map(([l,i])=>
+    `<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener" data-track="${esc(l.name)}">`+
+    `<div class="lnk-ico">${FAV(domainOf(l.url))}</div><div class="lnk-info"><div class="lnk-name">${esc(l.name)}</div>`+
+    `<div class="lnk-sub">${esc(domainOf(l.url))}</div></div>`+
+    (l.key?`<span class="lnk-shortcut">${esc(l.key)}</span>`:'')+
+    (sitesEditing?`<button type="button" class="lnk-del" aria-label="Remove ${esc(l.name)}" onclick="event.preventDefault();event.stopPropagation();removeLink(${i})">×</button>`:'<span class="larr">↗</span>')+
+    `</a>`).join('')).join('')||'<p class="sites-note">No links yet. Press <b>Edit</b> to add your first.</p>';
+  document.getElementById('sites-note').hidden=linksCustom||sitesEditing;
+  document.getElementById('sites-add').hidden=!sitesEditing;
+  document.getElementById('sites-reset-btn').hidden=!sitesEditing;
+  document.getElementById('sites-edit-btn').textContent=sitesEditing?'Done':'Edit';
+  const dl=document.getElementById('sa-cats');
+  if(dl) dl.innerHTML=[...new Set(userLinks.map(l=>l.cat||'Links'))].map(c=>`<option value="${esc(c)}">`).join('');
+}
+function toggleSitesEdit(force){
+  sitesEditing=force===undefined?!sitesEditing:force; renderSites(); placeWin('sites');
+  if(sitesEditing) setTimeout(()=>document.getElementById('sa-name')?.focus(),30);
+}
+function addLinkFromForm(e){
+  e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim();
+  let url=v('sa-url'); if(!/^https?:\/\//i.test(url)) url='https://'+url;
+  if(!domainOf(url)){flashToast('Check the address','That doesn’t look like a web address.');return;}
+  const key=v('sa-key').toUpperCase()||null;
+  if(key) userLinks.forEach(l=>{if((l.key||'').toUpperCase()===key) l.key=null;});
+  userLinks.push({name:v('sa-name'),url,key,cat:v('sa-cat')||'Links'});
+  ['sa-name','sa-url','sa-key'].forEach(id=>document.getElementById(id).value='');
+  saveLinks(); flashToast('Link added',key?'Shortcut: g then '+key:'');
+  document.getElementById('sa-name').focus();
+}
+function removeLink(i){const l=userLinks[i];userLinks.splice(i,1);saveLinks();flashToast('Removed',l?l.name:'');}
+function resetLinks(){
+  userLinks=STARTER_LINKS.map(l=>({...l})); linksCustom=false; dbS('links',null);
+  rebuildSites(); renderSites(); renderFooterHints(); renderChips(); flashToast('Starter links restored','');
+}
+function renderFooterHints(){
+  const el=document.getElementById('ft-hint'); if(!el) return;
+  const keyed=userLinks.filter(l=>l.key).slice(0,7);
+  el.innerHTML='<span><kbd>Space</kbd> command</span><span><kbd>F</kbd> focus</span>'+
+    keyed.map(l=>`<span><kbd>${esc(l.key)}</kbd> ${esc(l.name)}</span>`).join('')+'<span><kbd>?</kbd> all</span>';
+}
+// links are drawn after load, so one listener on the page counts visits
+document.addEventListener('click',e=>{const a=e.target.closest('a[data-track]');if(a&&!e.target.closest('.lnk-del')) trackVisit(a.dataset.track);});
+
+// ══ WATCHLIST & COUNTDOWN (each visitor's own) ══
+const CRYPTO_IDS={BTC:'bitcoin',ETH:'ethereum',SOL:'solana',XRP:'ripple',DOGE:'dogecoin',ADA:'cardano',AVAX:'avalanche-2',
+  LTC:'litecoin',DOT:'polkadot',LINK:'chainlink',BNB:'binancecoin',SHIB:'shiba-inu',TRX:'tron',XLM:'stellar',SUI:'sui',HBAR:'hedera-hashgraph'};
+function applyWatch(add,syms){
+  const st=new Set(CFG.stocks), cr={...CFG.crypto};
+  for(const x of syms){
+    if(add){ if(CRYPTO_IDS[x]) cr[x]=CRYPTO_IDS[x]; else st.add(x); }
+    else { st.delete(x); delete cr[x]; }
+  }
+  CFG={...CFG,stocks:[...st],crypto:cr}; saveConfig();
+  lastTickers=lastTickers.filter(t=>st.has(t.sym)||cr[t.sym]);
+  fetchTickers();
+  flashToast(add?'Watching':'Removed',syms.join(', '));
+  if(add) toggleWin('market',true);
+}
+function setCountdown(label,date){
+  CFG={...CFG,milestone:{label:label||'',date:date||''}}; saveConfig(); renderToday();
+}
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function openCmdWith(text){openCmd();setTimeout(()=>{const i=document.getElementById('cmd-input');i.value=text;renderCmd(text);i.focus();},60);}
 
 // ══ SECTION TOGGLE ══
 function toggleSec(head){
@@ -3962,6 +4042,41 @@ function renderCmd(val){
     const item=makeCmdItem(null,'Collection','What you have hatched','',()=>{closeCmd();openCollection();},true);
     container.appendChild(item);item.classList.add('sel');return;
   }
+  {const m=v.match(/^(watch|unwatch)\s+(.+)$/i); if(m){
+    const syms=m[2].toUpperCase().split(/[\s,]+/).filter(x=>/^[A-Z0-9.^=-]{1,12}$/.test(x));
+    if(syms.length){
+      const add=m[1].toLowerCase()==='watch';
+      const item=makeCmdItem(null,(add?'Watch ':'Stop watching ')+syms.join(', '),add?'Adds to your Market window':'Removes from your Market window','',()=>{closeCmd();applyWatch(add,syms);},true);
+      container.appendChild(item);item.classList.add('sel');return;
+    }
+  }}
+  if(/^(watch|watchlist)$/i.test(v)){
+    const all=[...CFG.stocks,...Object.keys(CFG.crypto)];
+    const item=makeCmdItem(null,'Your watchlist',all.length?all.join(', '):'Empty. Type watch NVDA BTC','',()=>{closeCmd();toggleWin('market',true);},true);
+    container.appendChild(item);item.classList.add('sel');return;
+  }
+  {const m=v.match(/^countdown\s*(.*)$/i); if(m){
+    const rest=m[1].trim();
+    if(/^(off|clear|none|remove)$/i.test(rest)){
+      const item=makeCmdItem(null,'Clear the countdown','Removes it from This week','',()=>{closeCmd();setCountdown('','');flashToast('Countdown cleared','');},true);
+      container.appendChild(item);item.classList.add('sel');return;
+    }
+    let when=null;
+    const iso=rest.match(/^(.*?)\s*(\d{4}-\d{2}-\d{2})\s*(.*)$/);
+    if(iso){when={date:new Date(iso[2]+'T00:00:00'),text:(iso[1]+' '+iso[3]).trim()};}
+    else if(rest) when=parseWhen(rest);
+    if(when&&when.text){
+      const label=when.text.replace(/^\w/,c=>c.toUpperCase()), date=ymd(when.date);
+      const item=makeCmdItem(null,'Count down to '+label,when.date.toDateString(),'',()=>{closeCmd();setCountdown(label,date);flashToast('Countdown set',label);},true);
+      container.appendChild(item);item.classList.add('sel');return;
+    }
+    const item=makeCmdItem(null,'Countdown',CFG.milestone.date?'Now: '+(CFG.milestone.label||'')+' · type a date and a name to change it':'Type a date and a name, e.g. countdown dec 18 Graduation','',()=>{},true);
+    container.appendChild(item);return;
+  }}
+  if(/^(links|edit links|sites)$/i.test(v)){
+    const item=makeCmdItem(null,'Edit your links','Opens the Sites window in edit mode','',()=>{closeCmd();toggleWin('sites',true);toggleSitesEdit(true);},true);
+    container.appendChild(item);item.classList.add('sel');return;
+  }
   if(/^(day|morning|noon|night|auto|clock|tone|light)$/i.test(v)){
     const w0=v.toLowerCase(), want=/^(tone|light)$/.test(w0)?TONES[(TONES.indexOf(tone)+1)%TONES.length]:({morning:'day',clock:'auto'}[w0]||w0);
     const item=makeCmdItem(null,TONE_META[want].label,TONE_META[want].note,'',()=>{closeCmd();applyTone(want,true);dbS('tone',tone);},true);
@@ -4103,7 +4218,7 @@ document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&!e.altKey&&e.key.toLowerCase()==='k'){
     e.preventDefault();cmdOpen?closeCmd():openCmd();return;
   }
-  // BUG FIX: without this, Cmd+C opened ChatGPT, Cmd+R opened Robinhood,
+  // BUG FIX: without this, Cmd+C opened ChatGPT, Cmd+R opened a site,
   // Cmd+L opened Lovable — every browser shortcut was being swallowed.
   if(e.ctrlKey||e.metaKey||e.altKey) return;
 
@@ -4134,8 +4249,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='T'&&!typing&&!cmdOpen){toggleTone();return;}
   if(e.key==='?'&&!typing){showShortcutToast();return;}
   if(!typing&&!cmdOpen){
-    // special single-char shortcuts not in SITES (@ for Gmail)
-    if(e.key==='@'){goSite('https://mail.google.com','Gmail');flashToast('@ → Gmail','');return;}
+    if(e.key==='@'&&KB['@']){const x=KB['@'];goSite(x.url,x.name);flashToast('@ → '+x.name,'');return;}
     if(e.key.length===1&&!CFG.leaderKey){const k=e.key.toUpperCase();if(KB[k]){const s=KB[k];goSite(s.url,s.name);flashToast(s.key+' → '+s.name,'');}}
   }
 });
@@ -4155,7 +4269,7 @@ function disarmLeader(){
 
 function showShortcutToast(){
   const lines=SITES.filter(s=>s.key).map(s=>`<span style="color:var(--gold);margin-right:6px">${s.key}</span>${s.name}`).join('<br>');
-  showToastHTML('Keyboard Shortcuts',lines+'<br><span style="color:var(--gold);margin-right:6px">@</span>Gmail<br><span style="color:var(--gold);margin-right:6px">F</span>Focus mode<br><span style="color:var(--gold);margin-right:6px">Space / ⌘K</span>Command bar<br><span style="color:var(--gold);margin-right:6px">?</span>This list',6000);
+  showToastHTML('Keyboard Shortcuts',lines+'<br><span style="color:var(--gold);margin-right:6px">F</span>Focus mode<br><span style="color:var(--gold);margin-right:6px">Space / ⌘K</span>Command bar<br><span style="color:var(--gold);margin-right:6px">?</span>This list',6000);
 }
 function flashToast(title,body){showToast(title,body,1800);}
 // showToast escapes by default. Only showToastHTML renders markup, and it is
@@ -4756,7 +4870,7 @@ async function renderChips(){
 }
 
 // ══ LINK TRACKING ══
-document.querySelectorAll('.lnk[data-track],#games a[data-track]').forEach(a=>{a.addEventListener('click',()=>trackVisit(a.dataset.track));});
+
 
 // ══ FOCUS INPUT ══
 async function initFocus(){const el=document.getElementById('focus-in');const v=await dbG('focus');if(v)el.value=v;el.addEventListener('input',()=>dbS('focus',el.value));}
@@ -4853,6 +4967,7 @@ openDB().then(async()=>{
   startRoaming();
   setTimeout(maybeEcho,700);
   await initDesk();
+  await loadLinks();
   applyTheme((await dbG('theme'))||'paper',false);
   applyTone((await dbG('tone'))||'auto',false);
   loadSand();

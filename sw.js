@@ -10,7 +10,7 @@
    Bump VERSION to force every client to re-fetch the shell.
    ══════════════════════════════════════════════════════════════ */
 
-const VERSION = 'v7.0';
+const VERSION = 'v7.1';
 const SHELL   = 'ffhome-shell-' + VERSION;
 const RUNTIME = 'ffhome-runtime-' + VERSION;
 

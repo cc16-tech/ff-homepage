@@ -1,4 +1,4 @@
-# Reefine Labs: Command Center
+# Reefine: Command Center
 
 A browser start page that works like a small desktop. It has a command bar in the middle, windows you can drag around, a dock along the bottom, and a second screen of daily brain games below.
 
@@ -22,12 +22,23 @@ It's one HTML file with no framework, no build step and no account. Everything y
 | **Build streak** | Log what you shipped each day. A few things stay hidden until you find them. |
 | **Offline** | After the first visit it still loads without a connection, using a service worker. |
 
+## Make it yours
+
+Nothing personal ships with the page. Each visitor sets up their own:
+
+| | |
+|---|---|
+| **Links** | Open **Sites → Edit** to add, remove or group links. Give a link a one-letter key and `g` + that letter opens it. You start with a few general links. |
+| **Watchlist** | Type `watch NVDA SPY BTC` or `unwatch TSLA`. Common cryptocurrencies are detected automatically. |
+| **Countdown** | Type `countdown dec 18 Graduation`, or any date and name: a birthday, a trip, a launch. Type `countdown off` to clear it. |
+| **Everything else** | Open **Settings** by clicking the version label at the bottom right. |
+
 ## Keyboard
 
 | Key | Action |
 |---|---|
 | `Space` / `⌘K` | Command bar |
-| `g` then a letter | Jump to a site |
+| `g` then a letter | Open one of your links |
 | `T` / `Shift+T` | Next theme / next light |
 | `F` | Focus mode |
 | `?` | All shortcuts |
@@ -55,6 +66,7 @@ Tasks, notes, streaks, window positions and settings live in your browser's Inde
 
 | Version | Date | Highlights |
 |---|---|---|
+| v7.1 | Nov 2026 | Your own links, watchlist and countdown, set from the page. The public file ships with none. Renamed to Reefine |
 | v7.0 | Nov 2026 | Redesigned as a desk with windows and a dock. Added the brain games screen, Morning/Noon/Night light, typefaces per theme and the Reefine logo |
 | v6.5 | Nov 2026 | Paper, Newsprint and Terminal themes; command bar; Candles mini-game; build streak; calendar; offline support; paper trades |
 | v6.2 | Mar 2026 | Command Center with a ticker, workspace and site sections |
